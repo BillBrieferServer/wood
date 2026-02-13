@@ -122,11 +122,19 @@ def product_detail(request: Request, slug: str):
 def contractors(request: Request):
     return _render_page(request, "contractors")
 
+def _get_species():
+    with db() as conn:
+        rows = conn.execute(
+            "SELECT DISTINCT category FROM products WHERE category != '' ORDER BY category"
+        ).fetchall()
+    return [r["category"] for r in rows]
+
+
 @app.get("/quote", response_class=HTMLResponse)
 def quote(request: Request):
     return templates.TemplateResponse("quote.html", {
         "request": request, "success": False, "error": "",
-        "form_data": {}
+        "form_data": {}, "species_list": _get_species()
     })
 
 
@@ -155,7 +163,7 @@ async def quote_submit(
         return templates.TemplateResponse("quote.html", {
             "request": request, "success": False,
             "error": "Name and email are required.",
-            "form_data": form_data,
+            "form_data": form_data, "species_list": _get_species(),
         })
 
     # Build email body
@@ -207,12 +215,12 @@ async def quote_submit(
         return templates.TemplateResponse("quote.html", {
             "request": request, "success": False,
             "error": "Something went wrong sending your request. Please call or email Alan directly.",
-            "form_data": form_data,
+            "form_data": form_data, "species_list": _get_species(),
         })
 
     return templates.TemplateResponse("quote.html", {
         "request": request, "success": True, "error": "",
-        "form_data": {},
+        "form_data": {}, "species_list": _get_species(),
     })
 
 @app.get("/our-story", response_class=HTMLResponse)
