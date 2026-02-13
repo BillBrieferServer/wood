@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Hardwood Haven of Idaho — Premium Live Edge Slabs{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero" style="background-image: url('https://static.wixstatic.com/media/2b67c8_b1d1496b28274699b6444c5c0640d236~mv2.jpg');">
+    <div class="hero-overlay">
+        <div class="hero-content">
+            <h1>Hardwood Haven of Idaho</h1>
+            <p class="hero-subtitle">Custom Wooden Slab Pieces Shipped to You</p>
+            <p class="hero-tagline">Your trusted source for premium live edge slabs and creative inspiration.</p>
+            <div class="hero-buttons">
+                <a href="/shop" class="btn btn-primary">Shop Our Slabs</a>
+                <a href="/quote" class="btn btn-outline">Get a Quote</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Intro -->
+<section class="section intro-section fade-in">
+    <h2>One-of-a-Kind Slabs. Handpicked for Your Project.</h2>
+    <p>Every slab in our inventory is unique — selected for exceptional grain, figure, and character. Whether you're building a dining table, a statement mantel, or a custom bar top, we have the wood to make it extraordinary. Based in Pocatello, Idaho and shipping nationwide.</p>
+</section>
+
+<!-- Three Feature Cards -->
+<section class="section feature-cards stagger-children">
+    <div class="card fade-in">
+        <div class="card-image" style="background-image: url('https://static.wixstatic.com/media/2b67c8_deeb33f1b031440c8038e0208d993944~mv2.jpg');"></div>
+        <h3>Live Edge Slabs</h3>
+        <p>Walnut, Cherry, Maple, White Oak, Hickory, Cedar, Flaming Box Elder, and more. Over 30 species in stock, from 6-foot accent pieces to 10-foot dining table slabs.</p>
+        <a href="/shop" class="card-link">Browse Slabs &rarr;</a>
+    </div>
+    <div class="card fade-in">
+        <div class="card-image" style="background-image: url('https://static.wixstatic.com/media/2b67c8_f26b543b6fb5461bbe194b4bdd4e8b4f~mv2.jpg');"></div>
+        <h3>Custom Projects</h3>
+        <p>From a rough slab to a finished masterpiece — we can flatten, sand, and finish to your specifications. Tables, mantels, bar tops, shelves, and more.</p>
+        <a href="/quote" class="card-link">Start Your Project &rarr;</a>
+    </div>
+    <div class="card fade-in">
+        <div class="card-image" style="background-image: url('https://static.wixstatic.com/media/2b67c8_f203b2c1771b4cb0a011c8d5d71a4f59~mv2.jpg');"></div>
+        <h3>Craft &amp; Turning Stock</h3>
+        <p>Bowl blanks, pen blanks, cutting board blanks, charcuterie blanks, and craft packs. Quality kiln-dried stock for woodturners and makers.</p>
+        <a href="/pricing" class="card-link">View Pricing &rarr;</a>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="section why-section">
+    <h2 class="fade-in">Why Hardwood Haven?</h2>
+    <div class="why-cards stagger-children">
+        <div class="why-card fade-in">
+            <h3>Hand-Selected</h3>
+            <p>Every log is personally chosen for grain quality, figure, and character. We don't buy sight-unseen — we pick the best so you get the best.</p>
+        </div>
+        <div class="why-card fade-in">
+            <h3>One of a Kind</h3>
+            <p>Each slab is unique. What you see on our site is exactly what you get — no stock photos, no bait-and-switch. Once a slab sells, it's gone forever.</p>
+        </div>
+        <div class="why-card fade-in">
+            <h3>Ships Nationwide</h3>
+            <p>Based in Pocatello, Idaho with local pickup available. We also ship anywhere in the continental US — at cost, no markup on shipping.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Species Tags -->
+<section class="section species-section">
+    <h2 class="fade-in">30+ Species In Stock</h2>
+    <p class="species-subtitle fade-in">From domestic favorites to specialty exotics — if it grows, we probably have it.</p>
+    <div class="species-tags">
+        <span class="tag tag-primary">Black Walnut</span>
+        <span class="tag tag-primary">White Oak</span>
+        <span class="tag tag-primary">American Cherry</span>
+        <span class="tag tag-primary">Hard Maple</span>
+        <span class="tag tag-primary">Hickory</span>
+        <span class="tag tag-primary">Western Red Cedar</span>
+        <span class="tag tag-accent">Flaming Box Elder</span>
+        <span class="tag tag-accent">Ambrosia Maple</span>
+        <span class="tag tag-accent">American Elm</span>
+        <span class="tag tag-accent">Pecan</span>
+        <span class="tag tag-accent">Sycamore</span>
+        <span class="tag tag-accent">Rainbow Poplar</span>
+        <span class="tag tag-accent">Cypress</span>
+        <span class="tag tag-more">+ Many More</span>
+    </div>
+    <p class="species-link fade-in"><a href="/our-story">See our full species list &rarr;</a></p>
+</section>
+
+<!-- Contractor CTA -->
+<section class="section contractor-cta fade-in">
+    <h2>Contractors &amp; Trade Professionals</h2>
+    <p>15% trade discount, volume pricing, Net 30 terms, and priority access to new inventory. We make it easy to source the wood your clients want.</p>
+    <a href="/contractors" class="btn btn-primary">Learn About Trade Accounts</a>
+</section>
+
+<!-- Featured Products -->
+{% if featured %}
+<section class="section featured-section">
+    <h2 class="fade-in">Latest Additions</h2>
+    <div class="product-grid">
+        {% for p in featured %}
+        <a href="/product/{{ p.slug }}" class="product-card fade-in">
+            {% if p.image_path %}
+            <img src="/static/images/products/{{ p.image_path }}" alt="{{ p.name }}" loading="lazy">
+            {% else %}
+            <div class="no-image">No Image</div>
+            {% endif %}
+            <div class="product-info">
+                <h3>{{ p.name }}</h3>
+                <p class="product-inquiry">Call for Pricing</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    <p style="text-align:center; margin-top:30px;" class="fade-in"><a href="/shop" class="btn btn-primary">View All Slabs</a></p>
+</section>
+{% endif %}
+
+<!-- Contact CTA -->
+<section class="section contact-cta fade-in">
+    <h2>Ready to Find Your Slab?</h2>
+    <p>Whether you know exactly what you need or you're just getting inspired, Alan is here to help. Call, text, or email — no pressure, no obligation.</p>
+    <p class="contact-phone"><a href="tel:2086802616">(208) 680-2616</a></p>
+    <p class="contact-email"><a href="mailto:alan@hardwoodhavenofidaho.com">alan@hardwoodhavenofidaho.com</a></p>
+    <p class="contact-location">Pocatello, Idaho &nbsp;|&nbsp; Local Pickup Available &nbsp;|&nbsp; Ships Continental US</p>
+</section>
+{% endblock %}

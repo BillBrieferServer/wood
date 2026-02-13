@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Hardwood Haven of Idaho{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <!-- Announcement Bar -->
+    <div class="announcement-bar">
+        <a href="tel:2086802616">Call or Text: (208) 680-2616</a>
+        &nbsp;&bull;&nbsp;
+        <a href="mailto:alan@hardwoodhavenofidaho.com">alan@hardwoodhavenofidaho.com</a>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">Hardwood Haven <span>of Idaho</span></a>
+            <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">&#9776;</button>
+            <div class="nav-links">
+                <a href="/shop">Shop Slabs</a>
+                <a href="/pricing">Pricing Guide</a>
+                <a href="/contractors">For Contractors</a>
+                <a href="/quote">Get a Quote</a>
+                <a href="/our-story">Our Story</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>Hardwood Haven of Idaho</h4>
+                <p>Premium live edge slabs, handpicked in Pocatello, Idaho. Shipped nationwide.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Shop</h4>
+                <a href="/shop">All Slabs</a>
+                <a href="/pricing">Pricing Guide</a>
+                <a href="/contractors">Trade Accounts</a>
+            </div>
+            <div class="footer-col">
+                <h4>Info</h4>
+                <a href="/our-story">Our Story</a>
+                <a href="/returns">Returns Policy</a>
+                <a href="/privacy">Privacy Policy</a>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p><a href="tel:2086802616">(208) 680-2616</a></p>
+                <p><a href="mailto:alan@hardwoodhavenofidaho.com">alan@hardwoodhavenofidaho.com</a></p>
+                <p>Pocatello, Idaho</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Hardwood Haven of Idaho. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+    // Nav shadow on scroll
+    window.addEventListener('scroll', function() {
+        var nav = document.querySelector('.main-nav');
+        if (window.scrollY > 10) {
+            nav.classList.add('scrolled');
+        } else {
+            nav.classList.remove('scrolled');
+        }
+    });
+
+    // Scroll-triggered fade-in animations
+    (function() {
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right, .species-tags').forEach(function(el) {
+            observer.observe(el);
+        });
+    })();
+    </script>
+</body>
+</html>

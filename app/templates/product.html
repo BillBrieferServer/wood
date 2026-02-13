@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} — Hardwood Haven of Idaho{% endblock %}
+
+{% block content %}
+<section class="section product-detail">
+    <div class="product-layout">
+        <!-- Image Gallery -->
+        <div class="product-gallery">
+            {% if images %}
+            <div class="gallery-main">
+                <img id="mainImage" src="/static/images/products/{{ images[0].image_path }}" alt="{{ product.name }}">
+            </div>
+            {% if images|length > 1 %}
+            <div class="gallery-thumbs">
+                {% for img in images %}
+                <img src="/static/images/products/{{ img.image_path }}" alt="{{ product.name }}"
+                     onclick="document.getElementById('mainImage').src=this.src"
+                     class="thumb {% if loop.first %}active{% endif %}">
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% else %}
+            <div class="no-image large">No Image Available</div>
+            {% endif %}
+        </div>
+
+        <!-- Product Info -->
+        <div class="product-sidebar">
+            <nav class="breadcrumb">
+                <a href="/shop">Shop</a> &rsaquo;
+                {% if product.category %}<a href="/shop?category={{ product.category }}">{{ product.category }}</a> &rsaquo;{% endif %}
+                <span>{{ product.name }}</span>
+            </nav>
+
+            <h1>{{ product.name }}</h1>
+
+            {% if product.short_description %}
+            <p class="product-short-desc">{{ product.short_description }}</p>
+            {% endif %}
+
+            {% if product.stock_status != 'instock' %}
+            <p class="badge-sold-large">This slab has been sold</p>
+            {% else %}
+            <div class="product-cta-box">
+                <p><strong>Love this slab? Let's talk.</strong></p>
+                <p>Every piece is priced individually based on size, species, and character. Call or text Alan for pricing, more photos, or to reserve it before it's gone.</p>
+                <a href="tel:2086802616" class="btn btn-primary btn-block">Call Alan: (208) 680-2616</a>
+                <a href="/quote" class="btn btn-outline btn-block">Request a Quote</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Full Description -->
+    {% if product.description %}
+    <div class="product-description">
+        {{ product.description | safe }}
+    </div>
+    {% endif %}
+</section>
+
+<section class="section" style="text-align:center;">
+    <a href="/shop" class="btn btn-outline">&larr; Back to All Slabs</a>
+</section>
+{% endblock %}

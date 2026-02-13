@@ -1,0 +1,20 @@
+# Hardwood Haven of Idaho - FastAPI Stack
+# Domain: wood.quietimpact.ai
+
+services:
+  app:
+    build: .
+    container_name: hardwood_app
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8000"
+    volumes:
+      - ./data:/opt/hardwood-haven/data
+      - ./app/static/images/products:/app/static/images/products
+    environment:
+      - DB_PATH=/opt/hardwood-haven/data/hardwood.db
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-hardwood2024}
+      - SECRET_KEY=${SECRET_KEY:-changeme}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+    labels:
+      - "com.hardwoodhaven.stack=production"

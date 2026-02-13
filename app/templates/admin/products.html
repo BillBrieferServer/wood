@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Products — Hardwood Haven Admin{% endblock %}
+
+{% block content %}
+<section class="section admin-section">
+    <div class="admin-header">
+        <h1>Manage Products</h1>
+        <div>
+            <a href="/admin/products/new" class="btn btn-primary">+ Add Product</a>
+            <a href="/admin/logout" class="btn btn-outline" style="margin-left:10px;">Log Out</a>
+        </div>
+    </div>
+
+    <div class="admin-product-cards">
+        {% for p in products %}
+        <div class="admin-product-card">
+            <a href="/admin/products/{{ p.id }}/edit" class="admin-card-link">
+                {% if p.image_path %}
+                <img src="/static/images/products/{{ p.image_path }}" alt="" class="admin-card-thumb">
+                {% else %}
+                <div class="admin-card-thumb admin-card-no-img">No Image</div>
+                {% endif %}
+                <div class="admin-card-info">
+                    <strong>{{ p.name }}</strong>
+                    <span class="admin-card-meta">{{ p.category }}{% if p.price %} &middot; ${{ "%.0f"|format(p.price) }}{% endif %}</span>
+                    {% if p.stock_status == 'instock' %}
+                    <span class="badge-instock">In Stock</span>
+                    {% else %}
+                    <span class="badge-sold">Sold</span>
+                    {% endif %}
+                </div>
+            </a>
+            <div class="admin-card-actions">
+                <a href="/admin/products/{{ p.id }}/edit" class="btn-sm">Edit</a>
+                <form method="POST" action="/admin/products/{{ p.id }}/delete" style="display:inline;" onsubmit="return confirm('Delete this product?')">
+                    <button type="submit" class="btn-sm btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

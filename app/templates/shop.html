@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Shop Live Edge Slabs — Hardwood Haven of Idaho{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Shop Our Slabs</h1>
+    <p>Every slab is one-of-a-kind. What you see is what you get.</p>
+</section>
+
+<!-- Category Filter -->
+<section class="section">
+    <div class="category-filter">
+        <a href="/shop" class="filter-btn {% if not current_category %}active{% endif %}">All Species</a>
+        {% for cat in categories %}
+        <a href="/shop?category={{ cat.category }}" class="filter-btn {% if current_category == cat.category %}active{% endif %}">{{ cat.category }}</a>
+        {% endfor %}
+    </div>
+
+    {% if products %}
+    <div class="product-grid">
+        {% for p in products %}
+        <a href="/product/{{ p.slug }}" class="product-card">
+            {% if p.image_path %}
+            <img src="/static/images/products/{{ p.image_path }}" alt="{{ p.name }}" loading="lazy">
+            {% else %}
+            <div class="no-image">No Image</div>
+            {% endif %}
+            <div class="product-info">
+                <h3>{{ p.name }}</h3>
+                {% if p.category %}<span class="product-category">{{ p.category }}</span>{% endif %}
+                {% if p.stock_status != 'instock' %}
+                <span class="badge-sold">Sold</span>
+                {% else %}
+                <p class="product-inquiry">Call for Pricing</p>
+                {% endif %}
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="text-align:center; color:#888; padding:40px;">No products found in this category.</p>
+    {% endif %}
+</section>
+
+<section class="section contact-cta" style="margin-top:40px;">
+    <h2>Don't See What You're Looking For?</h2>
+    <p>We get new slabs regularly and have inventory not yet listed. Call Alan at <a href="tel:2086802616">(208) 680-2616</a> or <a href="/quote">request a quote</a>.</p>
+</section>
+{% endblock %}
