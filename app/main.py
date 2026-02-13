@@ -123,11 +123,16 @@ def contractors(request: Request):
     return _render_page(request, "contractors")
 
 def _get_species():
-    with db() as conn:
-        rows = conn.execute(
-            "SELECT DISTINCT category FROM products WHERE category != '' ORDER BY category"
-        ).fetchall()
-    return [r["category"] for r in rows]
+    return [
+        "Alder", "Ambrosia Maple", "American Beech", "American Elm",
+        "American Sycamore", "Black Cherry", "Black Walnut",
+        "Butternut Hickory", "Carolina Hickory", "Chestnut",
+        "Flaming Box Elder", "Flowering Dogwood", "Green Ash",
+        "Live Oak", "Northern Red Oak", "Pecan", "Post Oak",
+        "Rainbow Poplar", "Red Maple", "Shagbark Hickory",
+        "Shellbark Hickory", "Sugar Maple", "Water Oak",
+        "White Ash", "White Oak", "Yellow Poplar",
+    ]
 
 
 @app.get("/quote", response_class=HTMLResponse)
