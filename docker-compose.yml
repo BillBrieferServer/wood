@@ -11,10 +11,8 @@ services:
     volumes:
       - ./data:/opt/hardwood-haven/data
       - ./app/static/images/products:/app/static/images/products
+    env_file: .env
     environment:
       - DB_PATH=/opt/hardwood-haven/data/hardwood.db
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-hardwood2024}
-      - SECRET_KEY=${SECRET_KEY:-changeme}
-      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
     labels:
       - "com.hardwoodhaven.stack=production"

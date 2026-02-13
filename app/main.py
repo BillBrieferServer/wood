@@ -3,6 +3,10 @@ import re
 import base64
 import secrets
 import shutil
+import smtplib
+import logging
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from contextlib import contextmanager
 
 from fastapi import FastAPI, Request, Form, UploadFile, File, HTTPException
@@ -18,6 +22,14 @@ app = FastAPI(title="Hardwood Haven of Idaho")
 SECRET_KEY = os.environ.get("SECRET_KEY", secrets.token_hex(32))
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "hardwood2024")
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
+SMTP_HOST = os.environ.get("SMTP_HOST", "smtp.ionos.com")
+SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
+SMTP_USER = os.environ.get("SMTP_USER", "")
+SMTP_PASS = os.environ.get("SMTP_PASS", "")
+QUOTE_EMAIL = os.environ.get("QUOTE_EMAIL", "alanhardwoodhaven@gmail.com")
+NTFY_TOPIC = os.environ.get("NTFY_TOPIC", "")
+
+logger = logging.getLogger("uvicorn.error")
 UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "static", "images", "products")
 
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
@@ -112,7 +124,96 @@ def contractors(request: Request):
 
 @app.get("/quote", response_class=HTMLResponse)
 def quote(request: Request):
-    return _render_page(request, "quote")
+    return templates.TemplateResponse("quote.html", {
+        "request": request, "success": False, "error": "",
+        "form_data": {}
+    })
+
+
+@app.post("/quote", response_class=HTMLResponse)
+async def quote_submit(
+    request: Request,
+    name: str = Form(""),
+    email: str = Form(""),
+    phone: str = Form(""),
+    species: str = Form(""),
+    project_type: str = Form(""),
+    size: str = Form(""),
+    timeline: str = Form(""),
+    delivery: str = Form(""),
+    details: str = Form(""),
+):
+    form_data = {
+        "name": name, "email": email, "phone": phone,
+        "species": species, "project_type": project_type,
+        "size": size, "timeline": timeline,
+        "delivery": delivery, "details": details,
+    }
+
+    # Validate required fields
+    if not name.strip() or not email.strip():
+        return templates.TemplateResponse("quote.html", {
+            "request": request, "success": False,
+            "error": "Name and email are required.",
+            "form_data": form_data,
+        })
+
+    # Build email body
+    lines = [
+        f"Name: {name}",
+        f"Email: {email}",
+        f"Phone: {phone or 'Not provided'}",
+        f"Species: {species or 'Not specified'}",
+        f"Project type: {project_type or 'Not specified'}",
+        f"Size: {size or 'Not specified'}",
+        f"Timeline: {timeline or 'Not specified'}",
+        f"Delivery: {delivery or 'Not specified'}",
+        f"Details: {details or 'None'}",
+    ]
+    body_text = chr(10).join(lines)
+
+    # Send email
+    email_sent = False
+    if SMTP_USER and SMTP_PASS:
+        try:
+            msg = MIMEMultipart()
+            msg["From"] = f"Hardwood Haven <{SMTP_USER}>"
+            msg["To"] = QUOTE_EMAIL
+            msg["Reply-To"] = email
+            msg["Subject"] = f"Quote Request from {name}"
+            msg.attach(MIMEText("New quote request from the website:\n\n" + body_text, "plain"))
+            with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+                server.starttls()
+                server.login(SMTP_USER, SMTP_PASS)
+                server.send_message(msg)
+            email_sent = True
+        except Exception as e:
+            logger.error(f"Quote email failed: {e}")
+
+    # Send ntfy notification
+    if NTFY_TOPIC:
+        try:
+            import httpx
+            ntfy_body = "Quote from " + name + chr(10) + (project_type or "No project type") + " - " + (species or "No species") + chr(10) + "Email: " + email
+            httpx.post(
+                f"https://ntfy.sh/{NTFY_TOPIC}",
+                content=ntfy_body.encode(),
+                headers={"Title": "New Quote Request", "Priority": "high", "Tags": "wood,incoming_envelope"},
+            )
+        except Exception as e:
+            logger.error(f"Quote ntfy failed: {e}")
+
+    if not email_sent and SMTP_USER:
+        return templates.TemplateResponse("quote.html", {
+            "request": request, "success": False,
+            "error": "Something went wrong sending your request. Please call or email Alan directly.",
+            "form_data": form_data,
+        })
+
+    return templates.TemplateResponse("quote.html", {
+        "request": request, "success": True, "error": "",
+        "form_data": {},
+    })
 
 @app.get("/our-story", response_class=HTMLResponse)
 def our_story(request: Request):
