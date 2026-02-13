@@ -929,21 +929,12 @@ img { max-width: 100%; height: auto; }
 }
 
 /* === Quote Form === */
-.quote-contact-box {
-    background: #f9f6f1;
-    padding: 25px;
-    border-radius: 8px;
-    margin: 0 0 10px;
-    text-align: center;
+.quote-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+    align-items: start;
 }
-.quote-contact-box h3 { color: #3E2723; margin-bottom: 8px; }
-.quote-phone { margin: 15px 0; }
-.quote-phone a {
-    font-size: 1.4em;
-    font-weight: 700;
-    color: #8B4513;
-}
-.quote-phone a:hover { color: #6d350e; text-decoration: none; }
 
 .quote-form label {
     display: block;
@@ -982,6 +973,20 @@ img { max-width: 100%; height: auto; }
 }
 .form-group { margin-bottom: 18px; }
 
+.sidebar-card {
+    background: white;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid #e0d5c7;
+    margin-bottom: 20px;
+}
+.sidebar-card h3 { color: #3E2723; margin-bottom: 8px; }
+.sidebar-card h4 { color: #3E2723; margin-bottom: 10px; }
+.sidebar-card--muted {
+    background: #f9f6f1;
+}
+
 .alert-success {
     background: #d4edda;
     color: #155724;
@@ -991,10 +996,8 @@ img { max-width: 100%; height: auto; }
     margin-bottom: 25px;
 }
 
-.quote-expect ol { padding-left: 20px; color: #444; line-height: 1.8; }
-.quote-expect li { margin-bottom: 5px; }
-
 @media (max-width: 768px) {
+    .quote-layout { grid-template-columns: 1fr; gap: 30px; }
     .form-row { grid-template-columns: 1fr; gap: 0; }
     .quote-form input[type="text"],
     .quote-form input[type="email"],
@@ -1009,3 +1012,4 @@ img { max-width: 100%; height: auto; }
         font-size: 1.05em;
     }
 }
+

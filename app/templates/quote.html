@@ -10,16 +10,6 @@
 
 <section class="section page-content">
 
-    <div class="quote-contact-box">
-        <h3>Talk to Alan Directly</h3>
-        <p>The fastest way to get a quote is to call or text:</p>
-        <p class="quote-phone"><a href="tel:2086802616">(208) 680-2616</a></p>
-        <p style="text-align:center;">or email: <a href="mailto:alan@hardwoodhavenofidaho.com">alan@hardwoodhavenofidaho.com</a></p>
-    </div>
-
-    <h2 style="margin-top:35px; margin-bottom:5px;">Or Fill Out a Quote Request</h2>
-    <p style="color:#666; margin-bottom:25px;">We&rsquo;ll respond within 24 hours with options and pricing.</p>
-
     {% if success %}
     <div class="alert alert-success">
         <strong>Quote request sent!</strong> Alan will get back to you within 24 hours. Check your email for a confirmation.
@@ -30,92 +20,122 @@
     <div class="alert alert-error">{{ error }}</div>
     {% endif %}
 
-    <form method="post" action="/quote" class="quote-form">
-        <div class="form-row">
-            <div class="form-group">
-                <label for="name">Name <span class="required">*</span></label>
-                <input type="text" id="name" name="name" required placeholder="Your full name" value="{{ form_data.get('name', '') }}">
+    <div class="quote-layout">
+
+        <!-- Form -->
+        <div class="quote-form-col">
+            <h2 style="margin-bottom:5px;">Fill Out a Quote Request</h2>
+            <p style="color:#666; margin-bottom:25px;">We&rsquo;ll respond within 24 hours with options and pricing.</p>
+
+            <form method="post" action="/quote" class="quote-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Name <span class="required">*</span></label>
+                        <input type="text" id="name" name="name" required placeholder="Your full name" value="{{ form_data.get('name', '') }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required placeholder="you@example.com" value="{{ form_data.get('email', '') }}">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone" placeholder="(208) 555-1234" value="{{ form_data.get('phone', '') }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="species">Wood Species</label>
+                        <select id="species" name="species">
+                            <option value="">— Select or let us recommend —</option>
+                            {% for sp in species_list %}
+                            <option value="{{ sp }}" {{ 'selected' if form_data.get('species') == sp else '' }}>{{ sp }}</option>
+                            {% endfor %}
+                            <option value="Other" {{ 'selected' if form_data.get('species') == 'Other' else '' }}>Other / Not sure</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="project_type">Project Type</label>
+                        <select id="project_type" name="project_type">
+                            <option value="">— Select —</option>
+                            <option value="Dining Table" {{ 'selected' if form_data.get('project_type') == 'Dining Table' else '' }}>Dining Table</option>
+                            <option value="Mantel" {{ 'selected' if form_data.get('project_type') == 'Mantel' else '' }}>Mantel</option>
+                            <option value="Desk" {{ 'selected' if form_data.get('project_type') == 'Desk' else '' }}>Desk</option>
+                            <option value="Bar Top" {{ 'selected' if form_data.get('project_type') == 'Bar Top' else '' }}>Bar Top</option>
+                            <option value="Cutting Boards" {{ 'selected' if form_data.get('project_type') == 'Cutting Boards' else '' }}>Cutting Boards</option>
+                            <option value="Shelving" {{ 'selected' if form_data.get('project_type') == 'Shelving' else '' }}>Shelving</option>
+                            <option value="Commercial" {{ 'selected' if form_data.get('project_type') == 'Commercial' else '' }}>Commercial</option>
+                            <option value="Other" {{ 'selected' if form_data.get('project_type') == 'Other' else '' }}>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="size">Approximate Size</label>
+                        <input type="text" id="size" name="size" placeholder="e.g. 8ft x 3ft x 2in" value="{{ form_data.get('size', '') }}">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="timeline">Timeline</label>
+                        <input type="text" id="timeline" name="timeline" placeholder="e.g. Within 2 weeks, no rush, etc." value="{{ form_data.get('timeline', '') }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="delivery">Delivery or Pickup</label>
+                        <select id="delivery" name="delivery">
+                            <option value="">— Select —</option>
+                            <option value="Delivery" {{ 'selected' if form_data.get('delivery') == 'Delivery' else '' }}>Delivery — ship continental US</option>
+                            <option value="Pickup" {{ 'selected' if form_data.get('delivery') == 'Pickup' else '' }}>Pickup in Pocatello, ID</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="details">Additional Details</label>
+                    <textarea id="details" name="details" rows="4" placeholder="Anything else we should know about your project?">{{ form_data.get('details', '') }}</textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Send Quote Request</button>
+            </form>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="quote-sidebar">
+            <div class="sidebar-card">
+                <h3>Talk to Alan Directly</h3>
+                <p style="margin: 15px 0;">
+                    <strong>Phone</strong><br>
+                    <a href="tel:2086802616" style="font-size:1.2em; font-weight:700; color:#8B4513;">(208) 680-2616</a>
+                </p>
+                <p style="margin: 15px 0;">
+                    <strong>Email</strong><br>
+                    <a href="mailto:alan@hardwoodhavenofidaho.com">alan@hardwoodhavenofidaho.com</a>
+                </p>
+                <p style="margin: 15px 0;">
+                    <strong>Location</strong><br>
+                    Pocatello, Idaho
+                </p>
             </div>
-            <div class="form-group">
-                <label for="email">Email <span class="required">*</span></label>
-                <input type="email" id="email" name="email" required placeholder="you@example.com" value="{{ form_data.get('email', '') }}">
+
+            <div class="sidebar-card sidebar-card--muted">
+                <h4>What to Expect</h4>
+                <ol style="padding-left: 18px; color: #555; line-height: 1.8;">
+                    <li><strong>We'll respond within 24 hours</strong> with options and pricing</li>
+                    <li><strong>We can send additional photos and video</strong> of any slab you're interested in</li>
+                    <li><strong>No pressure, no obligation</strong> — happy to help you find the right piece</li>
+                </ol>
+            </div>
+
+            <div class="sidebar-card sidebar-card--muted">
+                <h4>Contractors &amp; Trade</h4>
+                <p style="font-size: 0.95em; color: #555;">
+                    Contractor, cabinet maker, or professional woodworker? Ask about our <a href="/contractors">trade pricing program</a> with 15% discount and Net 30 terms.
+                </p>
             </div>
         </div>
 
-        <div class="form-row">
-            <div class="form-group">
-                <label for="phone">Phone</label>
-                <input type="tel" id="phone" name="phone" placeholder="(208) 555-1234" value="{{ form_data.get('phone', '') }}">
-            </div>
-            <div class="form-group">
-                <label for="species">Wood Species</label>
-                <select id="species" name="species">
-                    <option value="">— Select or let us recommend —</option>
-                    {% for sp in species_list %}
-                    <option value="{{ sp }}" {{ 'selected' if form_data.get('species') == sp else '' }}>{{ sp }}</option>
-                    {% endfor %}
-                    <option value="Other" {{ 'selected' if form_data.get('species') == 'Other' else '' }}>Other / Not sure</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label for="project_type">Project Type</label>
-                <select id="project_type" name="project_type">
-                    <option value="">— Select —</option>
-                    <option value="Dining Table" {{ 'selected' if form_data.get('project_type') == 'Dining Table' else '' }}>Dining Table</option>
-                    <option value="Mantel" {{ 'selected' if form_data.get('project_type') == 'Mantel' else '' }}>Mantel</option>
-                    <option value="Desk" {{ 'selected' if form_data.get('project_type') == 'Desk' else '' }}>Desk</option>
-                    <option value="Bar Top" {{ 'selected' if form_data.get('project_type') == 'Bar Top' else '' }}>Bar Top</option>
-                    <option value="Cutting Boards" {{ 'selected' if form_data.get('project_type') == 'Cutting Boards' else '' }}>Cutting Boards</option>
-                    <option value="Shelving" {{ 'selected' if form_data.get('project_type') == 'Shelving' else '' }}>Shelving</option>
-                    <option value="Commercial" {{ 'selected' if form_data.get('project_type') == 'Commercial' else '' }}>Commercial</option>
-                    <option value="Other" {{ 'selected' if form_data.get('project_type') == 'Other' else '' }}>Other</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="size">Approximate Size</label>
-                <input type="text" id="size" name="size" placeholder="e.g. 8ft x 3ft x 2in" value="{{ form_data.get('size', '') }}">
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group">
-                <label for="timeline">Timeline</label>
-                <input type="text" id="timeline" name="timeline" placeholder="e.g. Within 2 weeks, no rush, etc." value="{{ form_data.get('timeline', '') }}">
-            </div>
-            <div class="form-group">
-                <label for="delivery">Delivery or Pickup</label>
-                <select id="delivery" name="delivery">
-                    <option value="">— Select —</option>
-                    <option value="Delivery" {{ 'selected' if form_data.get('delivery') == 'Delivery' else '' }}>Delivery — ship continental US</option>
-                    <option value="Pickup" {{ 'selected' if form_data.get('delivery') == 'Pickup' else '' }}>Pickup in Pocatello, ID</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="details">Additional Details</label>
-            <textarea id="details" name="details" rows="4" placeholder="Anything else we should know about your project?">{{ form_data.get('details', '') }}</textarea>
-        </div>
-
-        <button type="submit" class="btn btn-primary btn-block">Send Quote Request</button>
-    </form>
-
-    <div class="quote-expect" style="margin-top:35px;">
-        <h3>What to Expect</h3>
-        <ol>
-            <li><strong>We&rsquo;ll respond within 24 hours</strong> with options and pricing</li>
-            <li><strong>We can send additional photos and video</strong> of any slab you&rsquo;re interested in</li>
-            <li><strong>No pressure, no obligation</strong> — we&rsquo;re happy to help you find the right piece</li>
-        </ol>
     </div>
-
-    <hr style="margin:30px 0;">
-
-    <h3>Contractors &amp; Trade Accounts</h3>
-    <p>If you&rsquo;re a contractor, cabinet maker, or professional woodworker, ask about our <a href="/contractors">trade pricing program</a> with 15% discount and Net 30 terms for approved accounts.</p>
-
 </section>
 {% endblock %}
