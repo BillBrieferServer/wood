@@ -232,6 +232,10 @@ async def quote_submit(
 def our_story(request: Request):
     return _render_page(request, "our-story")
 
+@app.get("/resources", response_class=HTMLResponse)
+def resources(request: Request):
+    return _render_page(request, "resources")
+
 @app.get("/returns", response_class=HTMLResponse)
 def returns(request: Request):
     return _render_page(request, "returns")
