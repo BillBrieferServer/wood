@@ -167,11 +167,11 @@ img { max-width: 100%; height: auto; }
     background: rgba(0,0,0,0.45);
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 40px 20px 40px;
+    justify-content: flex-start;
+    text-align: left;
+    padding: 60px 60px 40px;
 }
-.hero-content { max-width: 800px; }
+.hero-content { max-width: 650px; }
 .hero-content h1 {
     color: white;
     font-size: 3em;
@@ -766,7 +766,7 @@ img { max-width: 100%; height: auto; }
 
     /* --- Hero --- */
     .hero { min-height: 400px; }
-    .hero-overlay { padding: 30px 20px 60px; }
+    .hero-overlay { padding: 30px 20px 40px; }
     .hero-content h1 { font-size: 1.8em; margin-bottom: 8px; }
     .hero-content .hero-subtitle { font-size: 1.1em; margin-bottom: 8px; }
     .hero-content .hero-tagline { font-size: 0.95em; margin-bottom: 20px; }
