@@ -11,10 +11,17 @@
 <section class="section page-content">
 
     {% if success %}
-    <div class="alert alert-success">
-        <strong>Quote request sent!</strong> Alan will get back to you within 24 hours. Check your email for a confirmation.
+    <div class="quote-thank-you">
+        <div class="thank-you-icon">&#10003;</div>
+        <h2>Thank You!</h2>
+        <p class="thank-you-lead">Your quote request has been sent to Alan.</p>
+        <p>He'll get back to you within 24 hours with options and pricing. If you need something sooner, give him a call.</p>
+        <div class="thank-you-actions">
+            <a href="tel:2086802616" class="btn btn-primary">Call Alan: (208) 680-2616</a>
+            <a href="/shop" class="btn btn-outline">Continue Browsing Slabs</a>
+        </div>
     </div>
-    {% endif %}
+    {% else %}
 
     {% if error %}
     <div class="alert alert-error">{{ error }}</div>
@@ -131,5 +138,6 @@
         </div>
 
     </div>
+    {% endif %}
 </section>
 {% endblock %}
