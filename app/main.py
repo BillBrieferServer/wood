@@ -118,10 +118,6 @@ def product_detail(request: Request, slug: str):
 
 
 # Content pages
-@app.get("/contractors", response_class=HTMLResponse)
-def contractors(request: Request):
-    return _render_page(request, "contractors")
-
 def _get_species():
     return [
         "Alder", "Ambrosia Maple", "American Beech", "American Elm",
