@@ -1,30 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ product.name }} — Hardwood Haven of Idaho
-<script>
-function showImage(el) {
-    var img = document.getElementById('mainImage');
-    var video = document.getElementById('mainVideo');
-    img.src = el.src;
-    img.style.display = '';
-    if (video) { video.style.display = 'none'; video.pause(); }
-    // Update active thumb
-    document.querySelectorAll('.gallery-thumbs .thumb').forEach(function(t) { t.classList.remove('active'); });
-    el.classList.add('active');
-}
-function showVideo(el) {
-    var img = document.getElementById('mainImage');
-    var video = document.getElementById('mainVideo');
-    if (!video) return;
-    img.style.display = 'none';
-    video.style.display = '';
-    video.play();
-    // Update active thumb
-    document.querySelectorAll('.gallery-thumbs .thumb').forEach(function(t) { t.classList.remove('active'); });
-    el.classList.add('active');
-}
-</script>
-{% endblock %}
+{% block title %}{{ product.name }} — Hardwood Haven of Idaho{% endblock %}
 
 {% block content %}
 <section class="section product-detail">
@@ -95,4 +71,26 @@ function showVideo(el) {
 <section class="section" style="text-align:center;">
     <a href="/shop" class="btn btn-outline">&larr; Back to All Slabs</a>
 </section>
+
+<script>
+function showImage(el) {
+    var img = document.getElementById('mainImage');
+    var video = document.getElementById('mainVideo');
+    img.src = el.src;
+    img.style.display = '';
+    if (video) { video.style.display = 'none'; video.pause(); }
+    document.querySelectorAll('.gallery-thumbs .thumb').forEach(function(t) { t.classList.remove('active'); });
+    el.classList.add('active');
+}
+function showVideo(el) {
+    var img = document.getElementById('mainImage');
+    var video = document.getElementById('mainVideo');
+    if (!video) return;
+    img.style.display = 'none';
+    video.style.display = '';
+    video.play();
+    document.querySelectorAll('.gallery-thumbs .thumb').forEach(function(t) { t.classList.remove('active'); });
+    el.classList.add('active');
+}
+</script>
 {% endblock %}

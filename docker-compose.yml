@@ -11,6 +11,7 @@ services:
     volumes:
       - ./data:/opt/hardwood-haven/data
       - ./app/static/images/products:/app/static/images/products
+      - ./app/static/videos:/app/static/videos
     env_file: .env
     environment:
       - DB_PATH=/opt/hardwood-haven/data/hardwood.db
