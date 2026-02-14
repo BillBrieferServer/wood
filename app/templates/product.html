@@ -3,94 +3,108 @@
 {% block title %}{{ product.name }} — Hardwood Haven of Idaho{% endblock %}
 
 {% block content %}
-<section class="section product-detail">
-    <div class="product-layout">
-        <!-- Image Gallery -->
-        <div class="product-gallery">
-            {% if images %}
-            <div class="gallery-main">
-                <img id="mainImage" src="/static/images/products/{{ images[0].image_path }}" alt="{{ product.name }}">
-                {% if product.video_url %}
-                <video id="mainVideo" src="{{ product.video_url }}" controls playsinline preload="metadata" style="display:none; width:100%; border-radius:8px;"></video>
-                {% endif %}
-            </div>
-            {% if images|length > 1 or product.video_url %}
-            <div class="gallery-thumbs">
-                {% for img in images %}
-                <img src="/static/images/products/{{ img.image_path }}" alt="{{ product.name }}"
-                     onclick="showImage(this)"
-                     class="thumb {% if loop.first %}active{% endif %}">
-                {% endfor %}
-                {% if product.video_url %}
-                <div class="thumb video-thumb" onclick="showVideo(this)">
-                    <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.5)" stroke="white" stroke-width="1.5"/><polygon points="9.5,7.5 9.5,16.5 17,12" fill="white"/></svg>
-                </div>
-                {% endif %}
-            </div>
-            {% endif %}
-            {% else %}
-            <div class="no-image large">No Image Available</div>
-            {% endif %}
-        </div>
+<div class="product-page">
 
-        <!-- Product Info -->
-        <div class="product-sidebar">
-            <nav class="breadcrumb">
-                <a href="/shop">Shop</a> &rsaquo;
-                {% if product.category %}<a href="/shop?category={{ product.category }}">{{ product.category }}</a> &rsaquo;{% endif %}
-                <span>{{ product.name }}</span>
-            </nav>
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="/shop">Shop</a> &rsaquo;
+    {% if product.category %}<a href="/shop?category={{ product.category }}">{{ product.category }}</a> &rsaquo;{% endif %}
+    <span>{{ product.name }}</span>
+  </nav>
 
-            <h1>{{ product.name }}</h1>
+  <!-- Two-column product section -->
+  <div class="product-main">
 
-            {% if product.short_description %}
-            <p class="product-short-desc">{{ product.short_description }}</p>
-            {% endif %}
-
-            {% if product.stock_status != 'instock' %}
-            <p class="badge-sold-large">This slab has been sold</p>
-            {% else %}
-            <div class="product-cta-box">
-                <p><strong>Love this slab? Let's talk.</strong></p>
-                <p>Every piece is priced individually based on size, species, and character. Call or text Alan for pricing, more photos, or to reserve it before it's gone.</p>
-                <a href="tel:2086802616" class="btn btn-primary btn-block">Call Alan: (208) 680-2616</a>
-                <a href="/quote" class="btn btn-outline btn-block">Request a Quote</a>
-            </div>
-            {% endif %}
-        </div>
+    <!-- Left: Image Gallery -->
+    <div class="product-gallery">
+      {% if images %}
+      <div class="gallery-thumbnails">
+        {% for img in images %}
+        <button class="thumb {% if loop.first %}active{% endif %}" data-type="image" data-src="/static/images/products/{{ img.image_path }}">
+          <img src="/static/images/products/{{ img.image_path }}" alt="{{ product.name }}">
+        </button>
+        {% endfor %}
+        {% if product.video_url %}
+        <button class="thumb thumb-video" data-type="video">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.55)" stroke="white" stroke-width="1.5"/><polygon points="9.5,7.5 9.5,16.5 17,12" fill="white"/></svg>
+        </button>
+        {% endif %}
+      </div>
+      <div class="gallery-viewer">
+        <img id="mainImage" src="/static/images/products/{{ images[0].image_path }}" alt="{{ product.name }}">
+        {% if product.video_url %}
+        <video id="mainVideo" src="{{ product.video_url }}" controls playsinline preload="metadata"></video>
+        {% endif %}
+      </div>
+      {% else %}
+      <div class="no-image large">No Image Available</div>
+      {% endif %}
     </div>
 
-    <!-- Full Description -->
-    {% if product.description %}
-    <div class="product-description">
-        {{ product.description | safe }}
-    </div>
-    {% endif %}
-</section>
+    <!-- Right: Product Info (sticky) -->
+    <div class="product-detail-info">
+      <h1>{{ product.name }}</h1>
 
-<section class="section" style="text-align:center;">
-    <a href="/shop" class="btn btn-outline">&larr; Back to All Slabs</a>
-</section>
+      {% if product.short_description %}
+      <p class="product-hook">{{ product.short_description }}</p>
+      {% endif %}
+
+      {% if product.stock_status != 'instock' %}
+      <p class="badge-sold-large">This slab has been sold</p>
+      {% else %}
+      <div class="cta-block">
+        <p class="cta-intro">Love this slab? Let's talk.</p>
+        <p class="cta-note">Every piece is priced individually based on size, species, and character. Call or text Alan for pricing, more photos, or to reserve it before it's gone.</p>
+        <div class="cta-buttons">
+          <a href="tel:2086802616" class="btn btn-primary btn-block">Call Alan: (208) 680-2616</a>
+          <a href="/quote" class="btn btn-outline btn-block">Request a Quote</a>
+        </div>
+        <p class="urgency">One of a kind. Once it's gone, it's gone.</p>
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+
+  <!-- Full-width description below the two columns -->
+  {% if product.description %}
+  <div class="product-about">
+    <h2>About This Slab</h2>
+    {{ product.description | safe }}
+  </div>
+  {% endif %}
+
+  <!-- Bottom CTA -->
+  <div class="product-bottom-cta">
+    <p>Have questions or want to see more photos? Call Alan at <a href="tel:2086802616">(208) 680-2616</a> or <a href="/quote">request a quote</a>.</p>
+  </div>
+
+  <a href="/shop" class="back-link">&larr; Back to All Slabs</a>
+
+</div>
 
 <script>
-function showImage(el) {
-    var img = document.getElementById('mainImage');
-    var video = document.getElementById('mainVideo');
-    img.src = el.src;
-    img.style.display = '';
-    if (video) { video.style.display = 'none'; video.pause(); }
-    document.querySelectorAll('.gallery-thumbs .thumb').forEach(function(t) { t.classList.remove('active'); });
-    el.classList.add('active');
-}
-function showVideo(el) {
-    var img = document.getElementById('mainImage');
-    var video = document.getElementById('mainVideo');
-    if (!video) return;
-    img.style.display = 'none';
-    video.style.display = '';
-    video.play();
-    document.querySelectorAll('.gallery-thumbs .thumb').forEach(function(t) { t.classList.remove('active'); });
-    el.classList.add('active');
-}
+document.addEventListener('DOMContentLoaded', function() {
+  var thumbs = document.querySelectorAll('.gallery-thumbnails .thumb');
+  var mainImage = document.getElementById('mainImage');
+  var mainVideo = document.getElementById('mainVideo');
+
+  thumbs.forEach(function(thumb) {
+    thumb.addEventListener('click', function() {
+      thumbs.forEach(function(t) { t.classList.remove('active'); });
+      this.classList.add('active');
+
+      if (this.dataset.type === 'video' && mainVideo) {
+        mainImage.style.display = 'none';
+        mainVideo.style.display = 'block';
+        mainVideo.play();
+      } else {
+        if (mainVideo) { mainVideo.style.display = 'none'; mainVideo.pause(); }
+        mainImage.style.display = 'block';
+        mainImage.src = this.dataset.src;
+      }
+    });
+  });
+});
 </script>
 {% endblock %}
