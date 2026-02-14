@@ -94,14 +94,14 @@
     <div class="product-grid">
         {% for p in featured %}
         <a href="/product/{{ p.slug }}" class="product-card fade-in">
-            {% if p.image_path %}
-            <img src="/static/images/products/{{ p.image_path }}" alt="{{ p.name }}" loading="lazy">
-            {% else %}
-            <div class="no-image">No Image</div>
-            {% endif %}
-            <div class="product-info">
+            <div class="product-card-image">
+                {% if p.image_path %}
+                <img src="/static/images/products/{{ p.image_path }}" alt="{{ p.name }}" loading="lazy">
+                {% endif %}
+            </div>
+            <div class="product-card-info">
                 <h3>{{ p.name }}</h3>
-                <p class="product-inquiry">Call for Pricing</p>
+                <p class="price">Call for Pricing</p>
             </div>
         </a>
         {% endfor %}

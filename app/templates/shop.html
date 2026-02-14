@@ -20,19 +20,17 @@
     {% if products %}
     <div class="product-grid">
         {% for p in products %}
-        <a href="/product/{{ p.slug }}" class="product-card">
-            {% if p.image_path %}
-            <img src="/static/images/products/{{ p.image_path }}" alt="{{ p.name }}" loading="lazy">
-            {% else %}
-            <div class="no-image">No Image</div>
-            {% endif %}
-            <div class="product-info">
+        <a href="/product/{{ p.slug }}" class="product-card{% if p.stock_status != 'instock' %} sold{% endif %}">
+            <div class="product-card-image">
+                {% if p.image_path %}
+                <img src="/static/images/products/{{ p.image_path }}" alt="{{ p.name }}" loading="lazy">
+                {% endif %}
+            </div>
+            <div class="product-card-info">
                 <h3>{{ p.name }}</h3>
-                {% if p.category %}<span class="product-category">{{ p.category }}</span>{% endif %}
-                {% if p.stock_status != 'instock' %}
-                <span class="badge-sold">Sold</span>
-                {% else %}
-                <p class="product-inquiry">Call for Pricing</p>
+                {% if p.category %}<span class="species">{{ p.category }}</span>{% endif %}
+                {% if p.stock_status == 'instock' %}
+                <p class="price">Call for Pricing</p>
                 {% endif %}
             </div>
         </a>
