@@ -1,6 +1,30 @@
 {% extends "base.html" %}
 
-{% block title %}{{ product.name }} — Hardwood Haven of Idaho{% endblock %}
+{% block title %}{{ product.name }} — Hardwood Haven of Idaho
+<script>
+function showImage(el) {
+    var img = document.getElementById('mainImage');
+    var video = document.getElementById('mainVideo');
+    img.src = el.src;
+    img.style.display = '';
+    if (video) { video.style.display = 'none'; video.pause(); }
+    // Update active thumb
+    document.querySelectorAll('.gallery-thumbs .thumb').forEach(function(t) { t.classList.remove('active'); });
+    el.classList.add('active');
+}
+function showVideo(el) {
+    var img = document.getElementById('mainImage');
+    var video = document.getElementById('mainVideo');
+    if (!video) return;
+    img.style.display = 'none';
+    video.style.display = '';
+    video.play();
+    // Update active thumb
+    document.querySelectorAll('.gallery-thumbs .thumb').forEach(function(t) { t.classList.remove('active'); });
+    el.classList.add('active');
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <section class="section product-detail">
@@ -10,14 +34,22 @@
             {% if images %}
             <div class="gallery-main">
                 <img id="mainImage" src="/static/images/products/{{ images[0].image_path }}" alt="{{ product.name }}">
+                {% if product.video_url %}
+                <video id="mainVideo" src="{{ product.video_url }}" controls playsinline preload="metadata" style="display:none; width:100%; border-radius:8px;"></video>
+                {% endif %}
             </div>
-            {% if images|length > 1 %}
+            {% if images|length > 1 or product.video_url %}
             <div class="gallery-thumbs">
                 {% for img in images %}
                 <img src="/static/images/products/{{ img.image_path }}" alt="{{ product.name }}"
-                     onclick="document.getElementById('mainImage').src=this.src"
+                     onclick="showImage(this)"
                      class="thumb {% if loop.first %}active{% endif %}">
                 {% endfor %}
+                {% if product.video_url %}
+                <div class="thumb video-thumb" onclick="showVideo(this)">
+                    <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.5)" stroke="white" stroke-width="1.5"/><polygon points="9.5,7.5 9.5,16.5 17,12" fill="white"/></svg>
+                </div>
+                {% endif %}
             </div>
             {% endif %}
             {% else %}

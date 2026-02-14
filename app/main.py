@@ -334,15 +334,16 @@ def admin_product_create(
     price: float = Form(0),
     stock_status: str = Form("instock"),
     category: str = Form(""),
+    video_url: str = Form(""),
 ):
     if not is_admin(request):
         return RedirectResponse("/admin", status_code=302)
     slug = slugify(name)
     with db() as conn:
         cursor = conn.execute(
-            """INSERT INTO products (name, slug, description, short_description, price, stock_status, category)
-               VALUES (?, ?, ?, ?, ?, ?, ?)""",
-            (name, slug, description, short_description, price, stock_status, category)
+            """INSERT INTO products (name, slug, description, short_description, price, stock_status, category, video_url)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+            (name, slug, description, short_description, price, stock_status, category, video_url)
         )
         conn.commit()
         new_id = cursor.lastrowid
@@ -359,6 +360,7 @@ def admin_product_update(
     price: float = Form(0),
     stock_status: str = Form("instock"),
     category: str = Form(""),
+    video_url: str = Form(""),
 ):
     if not is_admin(request):
         return RedirectResponse("/admin", status_code=302)
@@ -366,8 +368,8 @@ def admin_product_update(
     with db() as conn:
         conn.execute(
             """UPDATE products SET name=?, slug=?, description=?, short_description=?,
-               price=?, stock_status=?, category=? WHERE id=?""",
-            (name, slug, description, short_description, price, stock_status, category, product_id)
+               price=?, stock_status=?, category=?, video_url=? WHERE id=?""",
+            (name, slug, description, short_description, price, stock_status, category, video_url, product_id)
         )
         conn.commit()
     return RedirectResponse("/admin/products", status_code=302)

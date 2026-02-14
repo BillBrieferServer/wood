@@ -24,6 +24,7 @@ def init_db():
             price REAL DEFAULT 0,
             stock_status TEXT DEFAULT 'instock',
             category TEXT DEFAULT '',
+            video_url TEXT DEFAULT '',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
         CREATE TABLE IF NOT EXISTS product_images (

@@ -25,6 +25,9 @@
             <option value="outofstock" {% if product and product.stock_status == 'outofstock' %}selected{% endif %}>Sold / Out of Stock</option>
         </select>
 
+        <label for="video_url">Video URL (path to .mp4 in /static/videos/ or external URL)</label>
+        <input type="text" name="video_url" id="video_url" value="{{ product.video_url if product and product.video_url else '' }}" placeholder="/static/videos/cherry.mp4">
+
         <label for="short_description">Short Description</label>
         <textarea name="short_description" id="short_description" rows="2">{{ product.short_description if product else '' }}</textarea>
 
