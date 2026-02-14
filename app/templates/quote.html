@@ -45,9 +45,9 @@
                         <input type="tel" id="phone" name="phone" placeholder="(208) 555-1234" value="{{ form_data.get('phone', '') }}">
                     </div>
                     <div class="form-group">
-                        <label for="species">Wood Species</label>
+                        <label for="species">Wood Species <span class="optional-mark">+</span></label>
                         <select id="species" name="species">
-                            <option value="">— Select or let us recommend —</option>
+                            <option value="">— Select —</option>
                             {% for sp in species_list %}
                             <option value="{{ sp }}" {{ 'selected' if form_data.get('species') == sp else '' }}>{{ sp }}</option>
                             {% endfor %}
@@ -72,7 +72,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="size">Dimensions</label>
+                        <label for="size">Dimensions <span class="optional-mark">+</span></label>
                         <input type="text" id="size" name="size" placeholder="e.g. 8ft x 3ft x 2in" value="{{ form_data.get('size', '') }}">
                     </div>
                 </div>
@@ -96,6 +96,8 @@
                     <label for="details">Additional Details</label>
                     <textarea id="details" name="details" rows="4" placeholder="Anything else we should know about your project?">{{ form_data.get('details', '') }}</textarea>
                 </div>
+
+                <p class="form-note"><span class="optional-mark">+</span> Don't see the species, size, or cut you need? We work directly with our sawmill partners to mill slabs and lumber to your exact specifications. Tell us what you're building and we'll make it happen.</p>
 
                 <button type="submit" class="btn btn-primary btn-block">Send Quote Request</button>
             </form>

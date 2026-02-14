@@ -972,6 +972,7 @@ img { max-width: 100%; height: auto; }
     gap: 20px;
 }
 .form-group { margin-bottom: 18px; }
+.optional-mark { color: #8B6914; font-weight: bold; }.form-note { font-size: 0.9rem; color: #666; margin-top: 8px; margin-bottom: 18px; line-height: 1.5; }.form-note .optional-mark { font-size: 1rem; }
 
 .sidebar-card {
     background: white;
