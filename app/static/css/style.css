@@ -32,7 +32,7 @@ img { max-width: 100%; height: auto; }
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     padding: 0 20px;
     height: 65px;
@@ -166,9 +166,9 @@ img { max-width: 100%; height: auto; }
     flex: 1;
     background: rgba(0,0,0,0.45);
     display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    text-align: left;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: center;
     padding: 60px 60px 40px;
 }
 .hero-content { max-width: 650px; }
@@ -372,7 +372,7 @@ img { max-width: 100%; height: auto; }
 .product-info h3 { color: #333; font-size: 1.1em; margin-bottom: 5px; }
 .product-category { color: #8B4513; font-size: 0.85em; font-weight: 500; }
 .product-price { color: #333; font-weight: 700; font-size: 1.2em; margin-top: 5px; }
-.no-image { height: 250px; background: #f0ebe3; display: flex; align-items: center; justify-content: center; color: #999; }
+.no-image { height: 250px; background: #f0ebe3; display: flex; align-items: flex-start; justify-content: center; color: #999; }
 .no-image.large { height: 400px; font-size: 1.2em; border-radius: 8px; }
 
 /* === Category Filter === */
@@ -472,7 +472,7 @@ img { max-width: 100%; height: auto; }
 .content-body p { margin-bottom: 15px; }
 .content-body a { color: #8B4513; }
 .content-body table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-.content-body td, .content-body th { padding: 8px; text-align: left; }
+.content-body td, .content-body th { padding: 8px; text-align: center; }
 
 /* === Featured Section === */
 .featured-section { text-align: center; }
@@ -498,7 +498,7 @@ img { max-width: 100%; height: auto; }
 
 /* === Admin === */
 .admin-section { max-width: 1000px; }
-.admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
+.admin-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
 .admin-form label { display: block; font-weight: 600; margin-top: 15px; margin-bottom: 5px; color: #333; }
 .admin-form input[type="text"],
 .admin-form input[type="number"],
@@ -522,7 +522,7 @@ img { max-width: 100%; height: auto; }
 .admin-form button, .admin-form .btn { margin-top: 20px; }
 
 .admin-table { width: 100%; border-collapse: collapse; }
-.admin-table th { text-align: left; padding: 10px; border-bottom: 2px solid #d4c5b0; color: #666; font-size: 0.9em; }
+.admin-table th { text-align: center; padding: 10px; border-bottom: 2px solid #d4c5b0; color: #666; font-size: 0.9em; }
 .admin-table td { padding: 10px; border-bottom: 1px solid #eee; vertical-align: middle; }
 .admin-table tr { transition: background 0.2s; }
 .admin-table tbody tr:hover { background: #faf8f5; }
@@ -567,7 +567,7 @@ img { max-width: 100%; height: auto; }
 .upload-zone {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     border: 3px dashed #d4c5b0;
     border-radius: 12px;
@@ -626,7 +626,7 @@ img { max-width: 100%; height: auto; }
 }
 .admin-card-link {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 15px;
     padding: 12px;
     color: inherit;
@@ -642,7 +642,7 @@ img { max-width: 100%; height: auto; }
 }
 .admin-card-no-img {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     background: #f0ebe3;
     color: #999;
@@ -794,7 +794,7 @@ img { max-width: 100%; height: auto; }
     /* --- Why Section --- */
     .why-section { padding: 40px 15px; }
     .why-section h2 { font-size: 1.4em; margin-bottom: 20px; }
-    .why-cards { flex-direction: column; align-items: center; gap: 10px; }
+    .why-cards { flex-direction: column; align-items: flex-start; gap: 10px; }
     .why-card { max-width: 100%; min-width: unset; padding: 20px 15px; }
     .why-card h3 { font-size: 1.15em; }
 
