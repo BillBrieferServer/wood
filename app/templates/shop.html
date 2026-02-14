@@ -31,6 +31,8 @@
                 {% if p.category %}<span class="species">{{ p.category }}</span>{% endif %}
                 {% if p.stock_status == 'instock' %}
                 <p class="price">Call for Pricing</p>
+                {% else %}
+                <p class="price sold-text">Sold</p>
                 {% endif %}
             </div>
         </a>

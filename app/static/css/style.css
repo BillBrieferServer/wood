@@ -424,6 +424,8 @@ img { max-width: 100%; height: auto; }
     letter-spacing: 0.05em;
     z-index: 1;
 }
+.product-card-info .sold-text { color: #999; font-weight: 500; font-style: italic; }
+
 .product-card.sold .product-card-image img {
     opacity: 0.5;
 }
