@@ -33,7 +33,7 @@
       <div class="gallery-viewer">
         <img id="mainImage" src="/static/images/products/{{ images[0].image_path }}" alt="{{ product.name }}">
         {% if product.video_url %}
-        <video id="mainVideo" src="{{ product.video_url }}" controls playsinline preload="metadata"></video>
+        <video id="mainVideo" src="{{ product.video_url }}" controls muted playsinline preload="metadata"></video>
         {% endif %}
       </div>
       {% else %}
