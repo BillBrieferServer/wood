@@ -17,7 +17,7 @@
         <div class="admin-product-card">
             <a href="/admin/products/{{ p.id }}/edit" class="admin-card-link">
                 {% if p.image_path %}
-                <img src="/static/images/products/{{ p.image_path }}" alt="" class="admin-card-thumb">
+                <img src="/static/images/products/thumbs/{{ p.image_path }}" alt="" class="admin-card-thumb">
                 {% else %}
                 <div class="admin-card-thumb admin-card-no-img">No Image</div>
                 {% endif %}

@@ -2,7 +2,7 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-RUN pip install --no-cache-dir fastapi uvicorn jinja2 python-multipart itsdangerous anthropic
+RUN pip install --no-cache-dir fastapi uvicorn jinja2 python-multipart itsdangerous anthropic Pillow
 
 COPY app/ .
 

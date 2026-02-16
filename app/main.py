@@ -15,7 +15,11 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 
+import mimetypes
+mimetypes.add_type('image/webp', '.webp')
+
 from database import get_db, init_db
+from PIL import Image as PILImage
 
 app = FastAPI(title="Hardwood Haven of Idaho")
 
@@ -456,12 +460,46 @@ async def admin_product_upload(request: Request, product_id: int, csrf_token: st
     else:
         raise HTTPException(status_code=400, detail=f"Invalid image type: {ext} ({content_type})")
 
-    filename = f"{product_id}_{secrets.token_hex(8)}{ext}"
-    filepath = os.path.join(UPLOAD_DIR, filename)
+    # Save original temporarily, then convert to WebP
+    temp_filename = f"{product_id}_{secrets.token_hex(8)}{ext}"
+    temp_path = os.path.join(UPLOAD_DIR, temp_filename)
+    with open(temp_path, "wb") as f:
+        raw = await image.read()
+        f.write(raw)
 
-    with open(filepath, "wb") as f:
-        content = await image.read()
-        f.write(content)
+    # Convert to optimized WebP
+    webp_name = os.path.splitext(temp_filename)[0] + ".webp"
+    webp_path = os.path.join(UPLOAD_DIR, webp_name)
+    thumbs_dir = os.path.join(UPLOAD_DIR, "thumbs")
+    os.makedirs(thumbs_dir, exist_ok=True)
+    thumb_path = os.path.join(thumbs_dir, webp_name)
+
+    try:
+        img = PILImage.open(temp_path)
+        if img.mode != "RGB":
+            img = img.convert("RGB")
+        w, h = img.size
+        # Full-size: max 1400px wide
+        if w > 1400:
+            ratio = 1400 / w
+            full_img = img.resize((1400, int(h * ratio)), PILImage.LANCZOS)
+        else:
+            full_img = img.copy()
+        full_img.save(webp_path, "WEBP", quality=82, method=4)
+        # Thumbnail: 600px wide
+        if w > 600:
+            ratio = 600 / w
+            thumb_img = img.resize((600, int(h * ratio)), PILImage.LANCZOS)
+        else:
+            thumb_img = img.copy()
+        thumb_img.save(thumb_path, "WEBP", quality=78, method=4)
+        # Remove temp original
+        os.remove(temp_path)
+        filename = webp_name
+    except Exception as e:
+        logger.error(f"WebP conversion failed: {e}, keeping original")
+        filename = temp_filename
+    filepath = os.path.join(UPLOAD_DIR, filename)
 
     with db() as conn:
         max_order = conn.execute(
