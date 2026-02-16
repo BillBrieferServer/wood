@@ -4,8 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Hardwood Haven of Idaho{% endblock %}</title>
+
+    {# SEO Meta - override in child templates #}
+    {% block meta_description %}<meta name="description" content="Premium live edge wood slabs from Hardwood Haven of Idaho. Black Walnut, Cherry, Maple, White Oak, Hickory and 30+ species. Ships nationwide from Pocatello, ID.">{% endblock %}
+    <link rel="canonical" href="{% block canonical %}https://wood.quietimpact.ai{% endblock %}">
+
+    {# Open Graph #}
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Hardwood Haven of Idaho">
+    {% block og_tags %}
+    <meta property="og:title" content="Hardwood Haven of Idaho — Premium Live Edge Slabs">
+    <meta property="og:description" content="Premium live edge wood slabs. 30+ species available. Ships nationwide from Pocatello, ID.">
+    <meta property="og:image" content="https://wood.quietimpact.ai/static/images/site/hero.webp">
+    <meta property="og:url" content="https://wood.quietimpact.ai">
+    {% endblock %}
+    <meta name="twitter:card" content="summary_large_image">
+
+    {# Favicon #}
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+
     <link rel="stylesheet" href="/static/css/style.css">
     {% block head %}{% endblock %}
+
+    {# LocalBusiness Schema #}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Hardwood Haven of Idaho",
+        "description": "Premium live edge wood slabs sourced from America's hardwood country. Based in Pocatello, Idaho. Ships nationwide.",
+        "url": "https://wood.quietimpact.ai",
+        "telephone": "+12086802616",
+        "email": "alan@hardwoodhavenofidaho.com",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Pocatello",
+            "addressRegion": "ID",
+            "addressCountry": "US"
+        },
+        "priceRange": "$$",
+        "image": "https://wood.quietimpact.ai/static/images/site/hero.webp"
+    }
+    </script>
+    {% block structured_data %}{% endblock %}
 </head>
 <body>
     <!-- Announcement Bar -->

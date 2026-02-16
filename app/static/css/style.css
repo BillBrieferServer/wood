@@ -149,6 +149,19 @@ img { max-width: 100%; height: auto; }
     .species-tags .tag { opacity: 1; transform: none; transition: none; }
     .hero-content h1, .hero-content .hero-subtitle,
     .hero-content .hero-tagline, .hero-content .hero-buttons { opacity: 1; transform: none; transition: none; }
+/* Hero h1 for SEO */
+.hero-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    letter-spacing: -0.02em;
+}
+@media (max-width: 768px) {
+    .hero-title { font-size: 1.8rem; }
+}
+
 }
 
 /* === Hero === */

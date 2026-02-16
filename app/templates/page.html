@@ -2,6 +2,9 @@
 
 {% block title %}{{ page.title }} — Hardwood Haven of Idaho{% endblock %}
 
+{% block meta_description %}<meta name="description" content="{{ meta_description }}">{% endblock %}
+{% block canonical %}https://wood.quietimpact.ai/{{ page.slug }}{% endblock %}
+
 {% block content %}
 <section class="page-header">
     <h1>{{ page.title }}</h1>

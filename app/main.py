@@ -32,6 +32,7 @@ SMTP_USER = os.environ.get("SMTP_USER", "")
 SMTP_PASS = os.environ.get("SMTP_PASS", "")
 QUOTE_EMAIL = os.environ.get("QUOTE_EMAIL", "alanhardwoodhaven@gmail.com")
 NTFY_TOPIC = os.environ.get("NTFY_TOPIC", "")
+DOMAIN = os.environ.get("DOMAIN", "https://wood.quietimpact.ai")
 
 logger = logging.getLogger("uvicorn.error")
 UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "static", "images", "products")
@@ -71,6 +72,15 @@ def slugify(text):
     text = re.sub(r'[\s_]+', '-', text)
     text = re.sub(r'-+', '-', text)
     return text
+
+
+# SEO meta descriptions for static pages
+PAGE_DESCRIPTIONS = {
+    "our-story": "Meet Alan and the Hardwood Haven of Idaho team. Learn how we source premium live edge slabs directly from America\u2019s hardwood country to Pocatello, Idaho.",
+    "resources": "Wood species guide, care tips, and project resources for live edge slab projects from Hardwood Haven of Idaho.",
+    "returns": "Refund and returns policy for Hardwood Haven of Idaho live edge wood slab purchases.",
+    "privacy": "Privacy policy for the Hardwood Haven of Idaho website and online services.",
+}
 
 
 @app.on_event("startup")
@@ -271,7 +281,49 @@ def _render_page(request: Request, slug: str):
         page = conn.execute("SELECT * FROM pages WHERE slug = ?", (slug,)).fetchone()
     if not page:
         raise HTTPException(status_code=404, detail="Page not found")
-    return templates.TemplateResponse("page.html", {"request": request, "page": page})
+    meta_desc = PAGE_DESCRIPTIONS.get(slug, f"{page['title']} — Hardwood Haven of Idaho")
+    return templates.TemplateResponse("page.html", {"request": request, "page": page, "meta_description": meta_desc})
+
+
+
+
+# --- SEO Routes ---
+
+@app.get("/robots.txt", response_class=HTMLResponse)
+def robots_txt():
+    return HTMLResponse(
+        content="User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: https://wood.quietimpact.ai/sitemap.xml\n",
+        media_type="text/plain",
+    )
+
+
+@app.get("/sitemap.xml", response_class=HTMLResponse)
+def sitemap_xml():
+    with db() as conn:
+        products = conn.execute("SELECT slug, stock_status FROM products ORDER BY id").fetchall()
+        pages = conn.execute("SELECT slug FROM pages WHERE slug NOT IN ('home', 'contractors', 'quote') ORDER BY slug").fetchall()
+
+    urls = []
+    # Homepage
+    urls.append('<url><loc>https://wood.quietimpact.ai</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>')
+    # Shop
+    urls.append('<url><loc>https://wood.quietimpact.ai/shop</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>')
+    # Quote
+    urls.append('<url><loc>https://wood.quietimpact.ai/quote</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>')
+    # Static pages
+    for page in pages:
+        urls.append(f'<url><loc>https://wood.quietimpact.ai/{page["slug"]}</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>')
+    # Products
+    for p in products:
+        priority = "0.8" if p["stock_status"] == "instock" else "0.4"
+        urls.append(f'<url><loc>https://wood.quietimpact.ai/product/{p["slug"]}</loc><changefreq>weekly</changefreq><priority>{priority}</priority></url>')
+
+    xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    xml += '\n'.join(urls)
+    xml += '\n</urlset>'
+
+    return HTMLResponse(content=xml, media_type="application/xml")
 
 
 # --- Admin Routes ---
