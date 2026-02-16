@@ -32,7 +32,7 @@
         <a href="/product/{{ p.slug }}" class="product-card{% if p.stock_status != 'instock' %} sold{% endif %}">
             <div class="product-card-image">
                 {% if p.image_path %}
-                <img src="/static/images/products/thumbs/{{ p.image_path }}" alt="{{ p.name }}" loading="lazy">
+                <img src="/static/images/products/thumbs/{{ p.image_path }}" alt="{{ p.name }} — {{ p.category }} live edge slab" loading="lazy">
                 {% endif %}
             </div>
             <div class="product-card-info">

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found — Hardwood Haven of Idaho{% endblock %}
+{% block meta_description %}<meta name="description" content="Page not found. Browse our live edge wood slabs or request a quote from Hardwood Haven of Idaho.">{% endblock %}
+
+{% block content %}
+<section style="text-align: center; padding: 80px 20px; min-height: 50vh;">
+    <h1 style="font-size: 4rem; color: #2c1810; margin-bottom: 10px;">404</h1>
+    <p style="font-size: 1.4rem; color: #5a3e2b; margin-bottom: 30px;">Sorry, we couldn't find that page.</p>
+    <p style="color: #777; margin-bottom: 40px;">It may have been moved or no longer exists.</p>
+    <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+        <a href="/shop" style="display: inline-block; padding: 14px 32px; background: #2c1810; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">Browse Slabs</a>
+        <a href="/quote" style="display: inline-block; padding: 14px 32px; background: transparent; color: #2c1810; text-decoration: none; border-radius: 6px; font-weight: 600; border: 2px solid #2c1810;">Get a Quote</a>
+        <a href="/" style="display: inline-block; padding: 14px 32px; background: transparent; color: #2c1810; text-decoration: none; border-radius: 6px; font-weight: 600; border: 2px solid #2c1810;">Home</a>
+    </div>
+</section>
+{% endblock %}

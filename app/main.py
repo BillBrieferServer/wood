@@ -43,6 +43,18 @@ app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__
 templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), "templates"))
 
 
+
+# --- Custom Error Pages ---
+
+from starlette.exceptions import HTTPException as StarletteHTTPException
+
+@app.exception_handler(StarletteHTTPException)
+async def custom_http_exception_handler(request: Request, exc: StarletteHTTPException):
+    if exc.status_code == 404:
+        return templates.TemplateResponse("404.html", {"request": request}, status_code=404)
+    return JSONResponse(content={"detail": exc.detail}, status_code=exc.status_code)
+
+
 # --- CSRF Protection ---
 
 def get_csrf_token(request: Request) -> str:

@@ -50,7 +50,7 @@
       <div class="gallery-thumbnails">
         {% for img in images %}
         <button class="thumb {% if loop.first %}active{% endif %}" data-type="image" data-src="/static/images/products/{{ img.image_path }}">
-          <img src="/static/images/products/{{ img.image_path }}" alt="{{ product.name }}">
+          <img src="/static/images/products/{{ img.image_path }}" alt="{{ product.name }} — {{ product.category }} live edge slab photo {{ loop.index }}">
         </button>
         {% endfor %}
         {% if product.video_url %}
@@ -60,7 +60,7 @@
         {% endif %}
       </div>
       <div class="gallery-viewer">
-        <img id="mainImage" src="/static/images/products/{{ images[0].image_path }}" alt="{{ product.name }}">
+        <img id="mainImage" src="/static/images/products/{{ images[0].image_path }}" alt="{{ product.name }} — {{ product.category }} live edge slab from Hardwood Haven of Idaho">
         {% if product.video_url %}
         <video id="mainVideo" src="{{ product.video_url }}" controls muted playsinline preload="metadata"></video>
         {% endif %}
