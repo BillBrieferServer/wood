@@ -35,6 +35,7 @@
             <p style="color:#666; margin-bottom:25px;">We&rsquo;ll respond within 24 hours with options and pricing.</p>
 
             <form method="post" action="/quote" class="quote-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="name">Name <span class="required">*</span></label>

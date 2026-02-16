@@ -34,6 +34,7 @@
             <div class="admin-card-actions">
                 <a href="/admin/products/{{ p.id }}/edit" class="btn-sm">Edit</a>
                 <form method="POST" action="/admin/products/{{ p.id }}/delete" style="display:inline;" onsubmit="return confirm('Delete this product?')">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                     <button type="submit" class="btn-sm btn-danger">Delete</button>
                 </form>
             </div>

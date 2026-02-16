@@ -11,6 +11,7 @@
     {% endif %}
 
     <form method="POST" action="/admin" class="admin-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         <label for="password">Password</label>
         <input type="password" name="password" id="password" required autofocus>
         <button type="submit" class="btn btn-primary btn-block">Log In</button>

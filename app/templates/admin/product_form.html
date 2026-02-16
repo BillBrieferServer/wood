@@ -10,6 +10,7 @@
     </div>
 
     <form method="POST" action="{% if product %}/admin/products/{{ product.id }}/edit{% else %}/admin/products/create{% endif %}" class="admin-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         <label for="name">Product Name</label>
         <input type="text" name="name" id="name" value="{{ product.name if product else '' }}" required>
 
@@ -61,6 +62,7 @@
             <div class="image-item">
                 <img src="/static/images/products/{{ img.image_path }}" alt="">
                 <form method="POST" action="/admin/products/images/{{ img.id }}/delete" onsubmit="return confirm('Delete this image?')">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                     <button type="submit" class="btn-sm btn-danger" style="width:100%; margin-top:5px;">Remove</button>
                 </form>
             </div>
@@ -72,6 +74,7 @@
 
         <!-- Upload area -->
         <form method="POST" action="/admin/products/{{ product.id }}/upload" enctype="multipart/form-data" class="upload-form" id="upload-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
             <label for="image" class="upload-zone" id="upload-zone">
                 <div class="upload-icon">&#128247;</div>
                 <div class="upload-text">Tap to take a photo or choose from library</div>
@@ -125,7 +128,7 @@ function generateDescription() {
 
     fetch('/admin/products/{{ product.id }}/generate', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'}
+        headers: {'Content-Type': 'application/json', 'X-CSRF-Token': '{{ csrf_token }}'}
     })
     .then(function(response) { return response.json(); })
     .then(function(data) {

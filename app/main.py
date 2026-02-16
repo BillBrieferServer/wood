@@ -38,6 +38,20 @@ app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__
 templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), "templates"))
 
 
+# --- CSRF Protection ---
+
+def get_csrf_token(request: Request) -> str:
+    if "csrf_token" not in request.session:
+        request.session["csrf_token"] = secrets.token_hex(32)
+    return request.session["csrf_token"]
+
+
+def validate_csrf(request: Request, csrf_token: str):
+    session_token = request.session.get("csrf_token", "")
+    if not csrf_token or not session_token or not secrets.compare_digest(session_token, csrf_token):
+        raise HTTPException(status_code=403, detail="CSRF validation failed")
+
+
 @contextmanager
 def db():
     conn = get_db()
@@ -135,13 +149,15 @@ def _get_species():
 def quote(request: Request):
     return templates.TemplateResponse("quote.html", {
         "request": request, "success": False, "error": "",
-        "form_data": {}, "species_list": _get_species()
+        "form_data": {}, "species_list": _get_species(),
+        "csrf_token": get_csrf_token(request)
     })
 
 
 @app.post("/quote", response_class=HTMLResponse)
 async def quote_submit(
     request: Request,
+    csrf_token: str = Form(""),
     name: str = Form(""),
     email: str = Form(""),
     phone: str = Form(""),
@@ -159,12 +175,15 @@ async def quote_submit(
         "delivery": delivery, "details": details,
     }
 
+    validate_csrf(request, csrf_token)
+
     # Validate required fields
     if not name.strip() or not email.strip():
         return templates.TemplateResponse("quote.html", {
             "request": request, "success": False,
             "error": "Name and email are required.",
             "form_data": form_data, "species_list": _get_species(),
+            "csrf_token": get_csrf_token(request),
         })
 
     # Build email body
@@ -217,11 +236,13 @@ async def quote_submit(
             "request": request, "success": False,
             "error": "Something went wrong sending your request. Please call or email Alan directly.",
             "form_data": form_data, "species_list": _get_species(),
+            "csrf_token": get_csrf_token(request),
         })
 
     return templates.TemplateResponse("quote.html", {
         "request": request, "success": True, "error": "",
         "form_data": {}, "species_list": _get_species(),
+        "csrf_token": get_csrf_token(request),
     })
 
 @app.get("/our-story", response_class=HTMLResponse)
@@ -259,16 +280,18 @@ def is_admin(request: Request) -> bool:
 def admin_login_page(request: Request):
     if is_admin(request):
         return RedirectResponse("/admin/products", status_code=302)
-    return templates.TemplateResponse("admin/login.html", {"request": request, "error": ""})
+    return templates.TemplateResponse("admin/login.html", {"request": request, "error": "", "csrf_token": get_csrf_token(request)})
 
 
 @app.post("/admin", response_class=HTMLResponse)
-def admin_login(request: Request, password: str = Form(...)):
+def admin_login(request: Request, password: str = Form(...), csrf_token: str = Form("")):
+    validate_csrf(request, csrf_token)
     if password == ADMIN_PASSWORD:
         request.session["admin"] = True
         return RedirectResponse("/admin/products", status_code=302)
     return templates.TemplateResponse("admin/login.html", {
-        "request": request, "error": "Invalid password"
+        "request": request, "error": "Invalid password",
+        "csrf_token": get_csrf_token(request)
     })
 
 
@@ -289,7 +312,8 @@ def admin_products(request: Request):
                ORDER BY p.name"""
         ).fetchall()
     return templates.TemplateResponse("admin/products.html", {
-        "request": request, "products": products
+        "request": request, "products": products,
+        "csrf_token": get_csrf_token(request)
     })
 
 
@@ -299,7 +323,8 @@ def admin_product_new(request: Request):
         return RedirectResponse("/admin", status_code=302)
     return templates.TemplateResponse("admin/product_form.html", {
         "request": request, "product": None, "images": [],
-        "has_ai": bool(ANTHROPIC_API_KEY), "auto_generate": False
+        "has_ai": bool(ANTHROPIC_API_KEY), "auto_generate": False,
+        "csrf_token": get_csrf_token(request)
     })
 
 
@@ -317,13 +342,15 @@ def admin_product_edit(request: Request, product_id: int, auto_generate: bool = 
         ).fetchall()
     return templates.TemplateResponse("admin/product_form.html", {
         "request": request, "product": product, "images": images,
-        "has_ai": bool(ANTHROPIC_API_KEY), "auto_generate": auto_generate
+        "has_ai": bool(ANTHROPIC_API_KEY), "auto_generate": auto_generate,
+        "csrf_token": get_csrf_token(request)
     })
 
 
 @app.post("/admin/products/create")
 def admin_product_create(
     request: Request,
+    csrf_token: str = Form(""),
     name: str = Form(...),
     short_description: str = Form(""),
     description: str = Form(""),
@@ -334,6 +361,7 @@ def admin_product_create(
 ):
     if not is_admin(request):
         return RedirectResponse("/admin", status_code=302)
+    validate_csrf(request, csrf_token)
     slug = slugify(name)
     with db() as conn:
         cursor = conn.execute(
@@ -350,6 +378,7 @@ def admin_product_create(
 def admin_product_update(
     request: Request,
     product_id: int,
+    csrf_token: str = Form(""),
     name: str = Form(...),
     short_description: str = Form(""),
     description: str = Form(""),
@@ -360,6 +389,7 @@ def admin_product_update(
 ):
     if not is_admin(request):
         return RedirectResponse("/admin", status_code=302)
+    validate_csrf(request, csrf_token)
     slug = slugify(name)
     with db() as conn:
         conn.execute(
@@ -372,9 +402,10 @@ def admin_product_update(
 
 
 @app.post("/admin/products/{product_id}/delete")
-def admin_product_delete(request: Request, product_id: int):
+def admin_product_delete(request: Request, product_id: int, csrf_token: str = Form("")):
     if not is_admin(request):
         return RedirectResponse("/admin", status_code=302)
+    validate_csrf(request, csrf_token)
     with db() as conn:
         # Delete images from disk
         images = conn.execute(
@@ -391,9 +422,10 @@ def admin_product_delete(request: Request, product_id: int):
 
 
 @app.post("/admin/products/{product_id}/upload")
-async def admin_product_upload(request: Request, product_id: int, image: UploadFile = File(...)):
+async def admin_product_upload(request: Request, product_id: int, csrf_token: str = Form(""), image: UploadFile = File(...)):
     if not is_admin(request):
         return RedirectResponse("/admin", status_code=302)
+    validate_csrf(request, csrf_token)
 
     # Determine file extension from filename or content type
     ext = os.path.splitext(image.filename or "")[1].lower()
@@ -447,9 +479,10 @@ async def admin_product_upload(request: Request, product_id: int, image: UploadF
 
 
 @app.post("/admin/products/images/{image_id}/delete")
-def admin_image_delete(request: Request, image_id: int):
+def admin_image_delete(request: Request, image_id: int, csrf_token: str = Form("")):
     if not is_admin(request):
         return RedirectResponse("/admin", status_code=302)
+    validate_csrf(request, csrf_token)
     with db() as conn:
         img = conn.execute("SELECT * FROM product_images WHERE id = ?", (image_id,)).fetchone()
         if img:
@@ -469,6 +502,12 @@ def admin_image_delete(request: Request, image_id: int):
 async def admin_generate_description(request: Request, product_id: int):
     if not is_admin(request):
         return JSONResponse({"error": "Not authorized"}, status_code=401)
+
+    # CSRF validation via header for fetch() requests
+    _csrf = request.headers.get("X-CSRF-Token", "")
+    _session_csrf = request.session.get("csrf_token", "")
+    if not _csrf or not _session_csrf or not secrets.compare_digest(_session_csrf, _csrf):
+        return JSONResponse({"error": "CSRF validation failed"}, status_code=403)
 
     if not ANTHROPIC_API_KEY:
         return JSONResponse({"error": "AI not configured. Add ANTHROPIC_API_KEY to .env"}, status_code=500)
