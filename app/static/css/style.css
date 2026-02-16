@@ -186,13 +186,15 @@ img { max-width: 100%; height: auto; }
 }
 .hero-content { max-width: 650px; }
 .hero-content h1 {
-    color: white;
-    font-size: 3em;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    opacity: 0;
-    transform: translateY(20px);
-    animation: heroFadeIn 1s ease 0.2s forwards;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 .hero-content .hero-subtitle {
     color: white;
@@ -227,7 +229,7 @@ img { max-width: 100%; height: auto; }
 
 @media (max-width: 768px) {
     .hero { min-height: 450px; }
-    .hero-content h1 { font-size: 2em; }
+
     .hero-content .hero-subtitle { font-size: 1.2em; }
 }
 
@@ -992,7 +994,7 @@ img { max-width: 100%; height: auto; }
     /* --- Hero --- */
     .hero { min-height: 400px; }
     .hero-overlay { padding: 30px 20px 40px; }
-    .hero-content h1 { font-size: 1.8em; margin-bottom: 8px; }
+
     .hero-content .hero-subtitle { font-size: 1.1em; margin-bottom: 8px; }
     .hero-content .hero-tagline { font-size: 0.95em; margin-bottom: 20px; }
     .hero-content .hero-buttons { gap: 10px; }
@@ -1152,7 +1154,7 @@ img { max-width: 100%; height: auto; }
 /* Extra small screens (iPhone SE, etc) */
 @media (max-width: 400px) {
     .hero { min-height: 350px; }
-    .hero-content h1 { font-size: 1.5em; }
+
     .hero-content .hero-subtitle { font-size: 1em; }
     .hero-content .hero-buttons { flex-direction: column; }
     .hero-content .hero-buttons .btn { width: 100%; }
