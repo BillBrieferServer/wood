@@ -262,7 +262,7 @@ img { max-width: 100%; height: auto; }
 }
 .intro-section { max-width: 900px; text-align: center; }
 .intro-section h2 { font-size: 2em; color: #333; margin-bottom: 15px; }
-.intro-section p { font-size: 1.15em; color: #555; line-height: 1.7; }
+.intro-section p { font-size: 1.15em; color: #555; line-height: 1.7; margin-bottom: 24px; }
 
 /* === Feature Cards === */
 .feature-cards { display: flex; gap: 30px; flex-wrap: wrap; }
