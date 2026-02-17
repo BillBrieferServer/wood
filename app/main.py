@@ -90,7 +90,6 @@ def slugify(text):
 PAGE_DESCRIPTIONS = {
     "our-story": "Meet Alan and the Hardwood Haven of Idaho team. Learn how we source premium live edge slabs directly from America\u2019s hardwood country to Pocatello, Idaho.",
     "resources": "Janka hardness scale for live edge wood species. Compare hardness ratings for Walnut, Cherry, Maple, Oak, Hickory and more at Hardwood Haven of Idaho.",
-    "returns": "Refund and returns policy for Hardwood Haven of Idaho live edge wood slab purchases.",
     "privacy": "Privacy policy for the Hardwood Haven of Idaho website and online services.",
     "species-guide": "Complete guide to live edge wood species — hardness ratings, character, best uses, and workability. Walnut, Cherry, Maple, Oak, Hickory, Box Elder and 25+ more.",
 }
@@ -284,9 +283,6 @@ def resources(request: Request):
 def species_guide(request: Request):
     return _render_page(request, "species-guide")
 
-@app.get("/returns", response_class=HTMLResponse)
-def returns(request: Request):
-    return _render_page(request, "returns")
 
 @app.get("/privacy", response_class=HTMLResponse)
 def privacy(request: Request):
@@ -318,7 +314,7 @@ def robots_txt():
 def sitemap_xml():
     with db() as conn:
         products = conn.execute("SELECT slug, stock_status FROM products ORDER BY id").fetchall()
-        pages = conn.execute("SELECT slug FROM pages WHERE slug NOT IN ('home', 'contractors', 'quote') ORDER BY slug").fetchall()
+        pages = conn.execute("SELECT slug FROM pages WHERE slug NOT IN ('home', 'contractors', 'quote', 'returns') ORDER BY slug").fetchall()
 
     urls = []
     # Homepage
