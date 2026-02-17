@@ -703,6 +703,7 @@ img { max-width: 100%; height: auto; }
 .content-body { color: #444; line-height: 1.7; }
 .content-body h2 { color: #333; margin: 25px 0 10px; }
 .content-body h3 { color: #8B4513; margin: 20px 0 8px; }
+.content-body h4 { color: #6B3410; margin: 25px 0 8px; font-size: 1.25em; border-bottom: 2px solid #d4a76a; padding-bottom: 4px; display: inline-block; }
 .content-body p { margin-bottom: 15px; }
 .content-body a { color: #8B4513; }
 .content-body table { width: 100%; border-collapse: collapse; margin: 15px 0; }
