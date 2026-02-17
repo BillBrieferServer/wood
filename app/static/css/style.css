@@ -584,6 +584,58 @@ img { max-width: 100%; height: auto; }
     background: #f5f0eb;
     display: block;
 }
+/* Image Zoom/Magnify */
+.zoom-container {
+    position: relative;
+    cursor: crosshair;
+}
+.zoom-container img {
+    width: 100%;
+    max-height: 75vh;
+    object-fit: contain;
+    border-radius: 6px;
+    background: #f5f0eb;
+    display: block;
+}
+.zoom-lens {
+    display: none;
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border: 2px solid #8B4513;
+    border-radius: 4px;
+    background: rgba(139, 69, 19, 0.08);
+    pointer-events: none;
+    z-index: 5;
+}
+.zoom-result {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: calc(100% + 15px);
+    width: 350px;
+    height: 350px;
+    border: 2px solid #d4a76a;
+    border-radius: 8px;
+    background-repeat: no-repeat;
+    background-color: #f5f0eb;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    z-index: 10;
+    pointer-events: none;
+}
+.zooming .zoom-hint { display: none; }
+@media (max-width: 1200px) {
+    .zoom-result {
+        left: auto;
+        right: 0;
+        top: calc(100% + 10px);
+    }
+}
+@media (max-width: 768px) {
+    .zoom-lens, .zoom-result { display: none !important; }
+    .zoom-container { cursor: default; }
+}
+
 .gallery-viewer video {
     width: 100%;
     max-height: 75vh;

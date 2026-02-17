@@ -60,7 +60,11 @@
         {% endif %}
       </div>
       <div class="gallery-viewer">
-        <img id="mainImage" src="/static/images/products/{{ images[0].image_path }}" alt="{{ product.name }} — {{ product.category }} live edge slab from Hardwood Haven of Idaho">
+        <div class="zoom-container" id="zoomContainer">
+          <img id="mainImage" src="/static/images/products/{{ images[0].image_path }}" alt="{{ product.name }} — {{ product.category }} live edge slab from Hardwood Haven of Idaho">
+          <div class="zoom-lens" id="zoomLens"></div>
+          <div class="zoom-result" id="zoomResult"></div>
+        </div>
         {% if product.video_url %}
         <video id="mainVideo" src="{{ product.video_url }}" controls muted playsinline preload="metadata"></video>
         {% endif %}
@@ -117,23 +121,116 @@ document.addEventListener('DOMContentLoaded', function() {
   var thumbs = document.querySelectorAll('.gallery-thumbnails .thumb');
   var mainImage = document.getElementById('mainImage');
   var mainVideo = document.getElementById('mainVideo');
+  var zoomContainer = document.getElementById('zoomContainer');
+  var zoomLens = document.getElementById('zoomLens');
+  var zoomResult = document.getElementById('zoomResult');
+  var zoomActive = false;
+  var ZOOM_LEVEL = 2.5;
 
+  // Thumbnail switching
   thumbs.forEach(function(thumb) {
     thumb.addEventListener('click', function() {
       thumbs.forEach(function(t) { t.classList.remove('active'); });
       this.classList.add('active');
 
       if (this.dataset.type === 'video' && mainVideo) {
-        mainImage.style.display = 'none';
+        zoomContainer.style.display = 'none';
         mainVideo.style.display = 'block';
         mainVideo.play();
       } else {
         if (mainVideo) { mainVideo.style.display = 'none'; mainVideo.pause(); }
-        mainImage.style.display = 'block';
+        zoomContainer.style.display = 'block';
         mainImage.src = this.dataset.src;
+        hideZoom();
       }
     });
   });
+
+  function hideZoom() {
+    zoomLens.style.display = 'none';
+    zoomResult.style.display = 'none';
+    zoomActive = false;
+    zoomContainer.classList.remove('zooming');
+  }
+
+  function showZoom(e) {
+    if (window.innerWidth < 768) return; // disable on mobile
+    zoomActive = true;
+    zoomContainer.classList.add('zooming');
+    zoomLens.style.display = 'block';
+    zoomResult.style.display = 'block';
+
+    // Set zoom result background to the full image
+    zoomResult.style.backgroundImage = 'url(' + mainImage.src + ')';
+    zoomResult.style.backgroundSize = (mainImage.naturalWidth * ZOOM_LEVEL) + 'px ' + (mainImage.naturalHeight * ZOOM_LEVEL) + 'px';
+
+    moveZoom(e);
+  }
+
+  function moveZoom(e) {
+    if (!zoomActive) return;
+
+    var rect = mainImage.getBoundingClientRect();
+    // Account for object-fit: contain — find actual image bounds within the element
+    var imgRatio = mainImage.naturalWidth / mainImage.naturalHeight;
+    var elemRatio = rect.width / rect.height;
+    var imgLeft, imgTop, imgWidth, imgHeight;
+
+    if (imgRatio > elemRatio) {
+      // Image is wider relative to container — letterboxed top/bottom
+      imgWidth = rect.width;
+      imgHeight = rect.width / imgRatio;
+      imgLeft = 0;
+      imgTop = (rect.height - imgHeight) / 2;
+    } else {
+      // Image is taller — pillarboxed left/right
+      imgHeight = rect.height;
+      imgWidth = rect.height * imgRatio;
+      imgTop = 0;
+      imgLeft = (rect.width - imgWidth) / 2;
+    }
+
+    var x = e.clientX - rect.left - imgLeft;
+    var y = e.clientY - rect.top - imgTop;
+
+    // Check if cursor is over the actual image
+    if (x < 0 || x > imgWidth || y < 0 || y > imgHeight) {
+      hideZoom();
+      return;
+    }
+
+    // Position lens
+    var lensW = zoomLens.offsetWidth;
+    var lensH = zoomLens.offsetHeight;
+    var lensX = e.clientX - rect.left - lensW / 2;
+    var lensY = e.clientY - rect.top - lensH / 2;
+
+    // Clamp lens to image bounds
+    lensX = Math.max(imgLeft, Math.min(lensX, imgLeft + imgWidth - lensW));
+    lensY = Math.max(imgTop, Math.min(lensY, imgTop + imgHeight - lensH));
+
+    zoomLens.style.left = lensX + 'px';
+    zoomLens.style.top = lensY + 'px';
+
+    // Calculate background position for zoom result
+    var percX = (lensX + lensW / 2 - imgLeft) / imgWidth;
+    var percY = (lensY + lensH / 2 - imgTop) / imgHeight;
+
+    var bgW = mainImage.naturalWidth * ZOOM_LEVEL;
+    var bgH = mainImage.naturalHeight * ZOOM_LEVEL;
+    var resultW = zoomResult.offsetWidth;
+    var resultH = zoomResult.offsetHeight;
+
+    var bgX = -(percX * bgW - resultW / 2);
+    var bgY = -(percY * bgH - resultH / 2);
+
+    zoomResult.style.backgroundPosition = bgX + 'px ' + bgY + 'px';
+  }
+
+  // Desktop: hover to magnify
+  zoomContainer.addEventListener('mouseenter', showZoom);
+  zoomContainer.addEventListener('mousemove', moveZoom);
+  zoomContainer.addEventListener('mouseleave', hideZoom);
 });
 </script>
 {% endblock %}
