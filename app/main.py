@@ -89,7 +89,7 @@ def slugify(text):
 # SEO meta descriptions for static pages
 PAGE_DESCRIPTIONS = {
     "our-story": "Meet Alan and the Hardwood Haven of Idaho team. Learn how we source premium live edge slabs directly from America\u2019s hardwood country to Pocatello, Idaho.",
-    "resources": "Wood species guide, care tips, and project resources for live edge slab projects from Hardwood Haven of Idaho.",
+    "resources": "Janka hardness scale for live edge wood species. Compare hardness ratings for Walnut, Cherry, Maple, Oak, Hickory and more at Hardwood Haven of Idaho.",
     "returns": "Refund and returns policy for Hardwood Haven of Idaho live edge wood slab purchases.",
     "privacy": "Privacy policy for the Hardwood Haven of Idaho website and online services.",
 }
