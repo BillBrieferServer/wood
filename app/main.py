@@ -92,6 +92,7 @@ PAGE_DESCRIPTIONS = {
     "resources": "Janka hardness scale for live edge wood species. Compare hardness ratings for Walnut, Cherry, Maple, Oak, Hickory and more at Hardwood Haven of Idaho.",
     "returns": "Refund and returns policy for Hardwood Haven of Idaho live edge wood slab purchases.",
     "privacy": "Privacy policy for the Hardwood Haven of Idaho website and online services.",
+    "species-guide": "Complete guide to live edge wood species — hardness ratings, character, best uses, and workability. Walnut, Cherry, Maple, Oak, Hickory, Box Elder and 25+ more.",
 }
 
 
@@ -279,6 +280,10 @@ def our_story(request: Request):
 def resources(request: Request):
     return _render_page(request, "resources")
 
+@app.get("/species-guide", response_class=HTMLResponse)
+def species_guide(request: Request):
+    return _render_page(request, "species-guide")
+
 @app.get("/returns", response_class=HTMLResponse)
 def returns(request: Request):
     return _render_page(request, "returns")
@@ -322,6 +327,8 @@ def sitemap_xml():
     urls.append('<url><loc>https://wood.quietimpact.ai/shop</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>')
     # Quote
     urls.append('<url><loc>https://wood.quietimpact.ai/quote</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>')
+    # Species Guide
+    urls.append('<url><loc>https://wood.quietimpact.ai/species-guide</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>')
     # Static pages
     for page in pages:
         urls.append(f'<url><loc>https://wood.quietimpact.ai/{page["slug"]}</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>')
