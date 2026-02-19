@@ -102,6 +102,10 @@ def startup():
 
 
 # --- Public Routes ---
+@app.get("/health")
+def health_check():
+    return {"status": "ok", "service": "hardwood-haven"}
+
 
 @app.get("/", response_class=HTMLResponse)
 def homepage(request: Request):
