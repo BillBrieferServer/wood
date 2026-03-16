@@ -166,8 +166,8 @@ def _get_species():
     return [
         "Alder", "Ambrosia Maple", "American Beech", "American Elm",
         "American Sycamore", "Black Cherry", "Black Walnut",
-        "Butternut", "Butternut Hickory", "Carolina Hickory",
-        "Chestnut", "Cypress", "Eastern Hemlock",
+        "Butternut Hickory", "Carolina Hickory",
+        "Chestnut", "Cypress", "Eastern Hemlock", "Eastern Red Cedar",
         "Flaming Box Elder", "Flowering Dogwood", "Green Ash",
         "Live Oak", "Northern Red Oak", "Pecan", "Post Oak",
         "Rainbow Poplar", "Red Maple", "Shagbark Hickory",
