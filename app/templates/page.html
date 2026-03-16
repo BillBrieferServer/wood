@@ -13,8 +13,43 @@
 </section>
 
 <section class="section page-content">
-    <div class="content-body">
+    <div class="content-body content-{{ page.slug }}">
         {{ page.content | safe }}
     </div>
 </section>
+
+{% if page.slug == 'species-guide' %}
+<script>
+(function() {
+    var body = document.querySelector('.content-species-guide');
+    if (!body) return;
+
+    var headings = body.querySelectorAll('h4');
+    var letters = {};
+    headings.forEach(function(h) {
+        var letter = h.textContent.trim().charAt(0).toUpperCase();
+        if (!letters[letter]) letters[letter] = h;
+        h.id = 'species-' + h.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    });
+
+    var nav = document.createElement('div');
+    nav.className = 'species-alpha-nav';
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(function(l) {
+        var a = document.createElement('a');
+        a.textContent = l;
+        if (letters[l]) {
+            a.href = '#' + letters[l].id;
+        } else {
+            a.className = 'disabled';
+        }
+        nav.appendChild(a);
+    });
+
+    var intro = body.querySelector('p');
+    if (intro) {
+        intro.parentNode.insertBefore(nav, intro.nextSibling);
+    }
+})();
+</script>
+{% endif %}
 {% endblock %}

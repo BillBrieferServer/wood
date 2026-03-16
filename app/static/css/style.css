@@ -1361,3 +1361,135 @@ img { max-width: 100%; height: auto; }
 .thank-you-actions .btn {
     text-align: center;
 }
+
+
+/* === Species Guide === */
+.content-species-guide {
+    color: #444;
+}
+
+/* Alphabet quick-nav */
+.species-alpha-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    margin-bottom: 30px;
+    padding: 18px 20px;
+    background: #f9f6f1;
+    border-radius: 8px;
+    border: 1px solid #e8e0d4;
+}
+.species-alpha-nav a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 4px;
+    background: white;
+    color: #8B4513;
+    font-weight: 600;
+    font-size: 0.9em;
+    border: 1px solid #ddd3c4;
+    transition: all 0.2s ease;
+}
+.species-alpha-nav a:hover {
+    background: #8B4513;
+    color: white;
+    text-decoration: none;
+    border-color: #8B4513;
+}
+.species-alpha-nav a.disabled {
+    color: #ccc;
+    border-color: #eee;
+    pointer-events: none;
+    background: #faf9f7;
+}
+
+/* Species cards — h4 is the header, following p is the body */
+.content-species-guide h4 {
+    background: linear-gradient(135deg, #8B4513 0%, #6d350e 100%);
+    color: white;
+    font-size: 1.25em;
+    padding: 14px 20px;
+    margin: 25px 0 0 0;
+    border-radius: 8px 8px 0 0;
+    letter-spacing: 0.02em;
+    scroll-margin-top: 80px;
+}
+.content-species-guide h4:first-of-type {
+    margin-top: 0;
+}
+.content-species-guide h4 + p {
+    background: #faf7f2;
+    border: 1px solid #e8e0d4;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    padding: 18px 20px;
+    margin: 0 0 0 0;
+    line-height: 1.75;
+    color: #444;
+}
+
+/* Alternate card backgrounds for variety */
+.content-species-guide h4:nth-of-type(even) + p {
+    background: #f5f0e8;
+}
+
+/* Style the bold labels inside species descriptions */
+.content-species-guide h4 + p strong {
+    color: #6d350e;
+}
+
+/* Intro paragraph (before first h4) */
+.content-species-guide > p:first-of-type {
+    font-size: 1.1em;
+    color: #555;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 30px;
+    line-height: 1.7;
+}
+
+/* The "Don't See Your Species?" section at the bottom */
+.content-species-guide hr {
+    border: none;
+    border-top: 2px solid #e8e0d4;
+    margin: 40px 0;
+}
+.content-species-guide h2:last-of-type {
+    color: #8B4513;
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 12px;
+}
+.content-species-guide h2:last-of-type + p {
+    text-align: center;
+    max-width: 650px;
+    margin: 0 auto;
+    font-size: 1.05em;
+    color: #555;
+    line-height: 1.7;
+}
+
+/* First h2 (duplicate "Species Guide" title) — hide it since page-hero shows it */
+.content-species-guide > h2:first-child {
+    display: none;
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+    .content-species-guide h4 {
+        font-size: 1.1em;
+        padding: 12px 15px;
+    }
+    .content-species-guide h4 + p {
+        padding: 14px 15px;
+    }
+    .species-alpha-nav a {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8em;
+    }
+}
