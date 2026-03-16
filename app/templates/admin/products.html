@@ -8,7 +8,7 @@
         <h1>Manage Products</h1>
         <div>
             <a href="/admin/products/new" class="btn btn-primary">+ Add Product</a>
-            <a href="/admin/logout" class="btn btn-outline" style="margin-left:10px;">Log Out</a>
+            <form method="POST" action="/admin/logout" style="display:inline;margin-left:10px;"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button type="submit" class="btn btn-outline">Log Out</button></form>
         </div>
     </div>
 

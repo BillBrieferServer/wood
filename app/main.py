@@ -1,5 +1,6 @@
 import os
 import re
+import time
 import base64
 import secrets
 import shutil
@@ -24,7 +25,9 @@ from PIL import Image as PILImage
 app = FastAPI(title="Hardwood Haven of Idaho")
 
 SECRET_KEY = os.environ.get("SECRET_KEY", secrets.token_hex(32))
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "hardwood2024")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
+if not ADMIN_PASSWORD:
+    raise RuntimeError("ADMIN_PASSWORD must be set in environment/.env")
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 SMTP_HOST = os.environ.get("SMTP_HOST", "smtp.ionos.com")
 SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
@@ -35,6 +38,12 @@ NTFY_TOPIC = os.environ.get("NTFY_TOPIC", "")
 DOMAIN = os.environ.get("DOMAIN", "https://wood.quietimpact.ai")
 
 logger = logging.getLogger("uvicorn.error")
+
+# Brute-force protection: {ip: (fail_count, last_fail_timestamp)}
+LOGIN_ATTEMPTS = {}
+MAX_ATTEMPTS = 10
+LOCKOUT_SECONDS = 900  # 15 minutes
+SESSION_MAX_AGE = 8 * 3600  # 8 hours
 UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "static", "images", "products")
 
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
@@ -350,7 +359,13 @@ def sitemap_xml():
 # --- Admin Routes ---
 
 def is_admin(request: Request) -> bool:
-    return request.session.get("admin") is True
+    if not request.session.get("admin"):
+        return False
+    login_time = request.session.get("admin_login_time", 0)
+    if time.time() - login_time > SESSION_MAX_AGE:
+        request.session.clear()
+        return False
+    return True
 
 
 @app.get("/admin", response_class=HTMLResponse)
@@ -363,17 +378,35 @@ def admin_login_page(request: Request):
 @app.post("/admin", response_class=HTMLResponse)
 def admin_login(request: Request, password: str = Form(...), csrf_token: str = Form("")):
     validate_csrf(request, csrf_token)
-    if password == ADMIN_PASSWORD:
+    client_ip = request.headers.get("X-Real-IP", request.client.host)
+
+    # Check lockout
+    attempts = LOGIN_ATTEMPTS.get(client_ip, (0, 0))
+    if attempts[0] >= MAX_ATTEMPTS and time.time() - attempts[1] < LOCKOUT_SECONDS:
+        return templates.TemplateResponse("admin/login.html", {
+            "request": request, "error": "Too many failed attempts. Try again later.",
+            "csrf_token": get_csrf_token(request)
+        })
+
+    if secrets.compare_digest(password, ADMIN_PASSWORD):
         request.session["admin"] = True
+        request.session["admin_login_time"] = time.time()
+        LOGIN_ATTEMPTS.pop(client_ip, None)
         return RedirectResponse("/admin/products", status_code=302)
+
+    # Track failed attempt
+    fail_count = attempts[0] + 1
+    LOGIN_ATTEMPTS[client_ip] = (fail_count, time.time())
+    logger.warning(f"Failed admin login from {client_ip} (attempt {fail_count})")
     return templates.TemplateResponse("admin/login.html", {
         "request": request, "error": "Invalid password",
         "csrf_token": get_csrf_token(request)
     })
 
 
-@app.get("/admin/logout")
-def admin_logout(request: Request):
+@app.post("/admin/logout")
+def admin_logout(request: Request, csrf_token: str = Form("")):
+    validate_csrf(request, csrf_token)
     request.session.clear()
     return RedirectResponse("/admin", status_code=302)
 
