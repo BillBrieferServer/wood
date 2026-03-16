@@ -289,6 +289,26 @@
             if (h.textContent.indexOf('Softwood') !== -1) softwoodH3 = h;
         });
 
+        var jankaMap = {
+            "Alder": 590, "Ambrosia Maple": 950, "American Beech": 1300,
+            "American Elm": 830, "American Sycamore": 770, "Black Cherry": 950,
+            "Black Walnut": 1010, "Butternut Hickory": 1820, "Carolina Hickory": 1820,
+            "Chestnut": 540, "Cypress": 510, "Eastern Hemlock": 500,
+            "Eastern Red Cedar": 900, "Flaming Box Elder": 720, "Flowering Dogwood": 2150,
+            "Green Ash": 1200, "Live Oak": 2680, "Pecan": 1820,
+            "Post Oak": 1600, "Rainbow Poplar": 540, "Red Maple": 950,
+            "Red Oak": 1290, "Shagbark Hickory": 1880, "Shellbark Hickory": 1880,
+            "Sugar Maple (Hard Maple)": 1450, "Water Oak": 1190, "Western Red Cedar": 350,
+            "White Ash": 1320, "White Oak": 1360, "Yellow Poplar": 540
+        };
+        function getJankaColor(j) {
+            var pct = j / 2800;
+            var r = Math.round(220 - pct * 100);
+            var g = Math.round(190 - pct * 120);
+            var b = Math.round(140 - pct * 110);
+            return 'rgb(' + r + ',' + g + ',' + b + ')';
+        }
+
         function makeTagGroup(h3el, tagClass) {
             if (!h3el) return;
             var p = h3el.nextElementSibling;
@@ -302,7 +322,9 @@
             tagsDiv.className = 'story-species-tags';
             names.forEach(function(name) {
                 var slug = 'species-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-$/, '');
-                tagsDiv.innerHTML += '<a href="/species-guide#' + slug + '" class="tag ' + tagClass + '" style="text-decoration:none;">' + name + '</a>';
+                var janka = jankaMap[name] || 800;
+                var bg = getJankaColor(janka);
+                tagsDiv.innerHTML += '<a href="/species-guide#' + slug + '" class="tag" style="text-decoration:none;background:' + bg + ';color:#fff;">' + name + '</a>';
             });
             group.appendChild(tagsDiv);
 
