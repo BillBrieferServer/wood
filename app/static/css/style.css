@@ -1674,3 +1674,15 @@ img { max-width: 100%; height: auto; }
     .hardness-bar-track { height: 20px; }
     .hardness-bar-row { margin-bottom: 4px; }
 }
+
+/* Reference-only species (not carried) */
+.hardness-bar-row.reference-only .hardness-bar-label {
+    color: #bbb;
+    font-weight: 400;
+}
+.hardness-bar-row.reference-only .hardness-bar-fill {
+    opacity: 0.45;
+}
+.hardness-bar-row.reference-only .hardness-bar-value {
+    color: #bbb;
+}
