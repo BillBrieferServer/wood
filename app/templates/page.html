@@ -294,6 +294,13 @@
             h3el.remove();
         }
 
+        // Style the two intro paragraphs between heading and species lists
+        var node = speciesH2.nextElementSibling;
+        while (node && node.tagName === 'P') {
+            node.className = 'species-intro';
+            node = node.nextElementSibling;
+        }
+
         makeTagGroup(domesticH3, 'tag-hw');
         makeTagGroup(softwoodH3, 'tag-sw');
 
@@ -335,7 +342,7 @@
         ctaDiv.removeAttribute('style');
         var links = ctaDiv.querySelectorAll('a');
         links.forEach(function(a) {
-            a.className = 'btn btn-primary';
+            a.className = 'btn-wood';
             a.removeAttribute('style');
         });
     }
