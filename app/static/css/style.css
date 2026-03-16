@@ -1902,7 +1902,7 @@ img { max-width: 100%; height: auto; }
 }
 
 /* Wood grain CTA buttons */
-a.btn-wood, a.btn-wood:visited, .btn-wood {
+a.btn-wood, a.btn-wood:visited, button.btn-wood, .btn-wood {
     display: inline-block;
     padding: 14px 35px;
     font-size: 1.05em;
@@ -1919,7 +1919,7 @@ a.btn-wood, a.btn-wood:visited, .btn-wood {
     text-decoration: none;
     transition: all 0.3s ease;
 }
-a.btn-wood:hover, .btn-wood:hover {
+a.btn-wood:hover, button.btn-wood:hover, .btn-wood:hover {
     box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.5);
     transform: translateY(-2px);
     text-decoration: none;
