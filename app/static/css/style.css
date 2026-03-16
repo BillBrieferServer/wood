@@ -758,10 +758,20 @@ img { max-width: 100%; height: auto; }
 .site-footer {
     background: #2c2017;
     color: #ccc;
-    padding: 50px 20px 20px;
+    padding: 0 20px 20px;
+    position: relative;
+}
+.site-footer::before {
+    content: '';
+    display: block;
+    height: 6px;
+    background-image: url('/static/images/site/wood-grain.webp');
+    background-size: cover;
+    background-position: center;
+    margin: 0 -20px 40px;
 }
 .footer-container { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; }
-.footer-col h4 { color: white; margin-bottom: 15px; font-size: 1.1em; }
+.footer-col h4 { color: #d4a76a; margin-bottom: 15px; font-size: 1.1em; letter-spacing: 0.03em; }
 .footer-col a {
     display: block;
     color: #bbb;
@@ -770,7 +780,10 @@ img { max-width: 100%; height: auto; }
 }
 .footer-col a:hover { color: white; padding-left: 5px; text-decoration: none; }
 .footer-col p { margin-bottom: 8px; }
-.footer-bottom { max-width: 1100px; margin: 30px auto 0; padding-top: 20px; border-top: 1px solid #453628; text-align: center; color: #888; font-size: 0.9em; }
+.footer-col .footer-phone a { font-size: 1.15em; font-weight: 700; color: #d4a76a; }
+.footer-col .footer-phone a:hover { color: white; }
+.footer-bottom { max-width: 1100px; margin: 30px auto 0; padding-top: 20px; border-top: none; text-align: center; color: #888; font-size: 0.9em; position: relative; }
+.footer-bottom::before { content: ''; display: block; height: 3px; background-image: url('/static/images/site/wood-grain.webp'); background-size: cover; background-position: center; opacity: 0.4; margin-bottom: 20px; border-radius: 2px; }
 
 /* === Admin === */
 .admin-section { max-width: 1000px; }
