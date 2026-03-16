@@ -4,6 +4,12 @@
 
 {% block meta_description %}<meta name="description" content="{{ meta_description }}">{% endblock %}
 {% block canonical %}https://wood.quietimpact.ai/{{ page.slug }}{% endblock %}
+{% block og_tags %}
+<meta property="og:title" content="{{ page.title }} — Hardwood Haven of Idaho">
+<meta property="og:description" content="{{ meta_description }}">
+<meta property="og:image" content="https://wood.quietimpact.ai/static/images/site/hero.webp">
+<meta property="og:url" content="https://wood.quietimpact.ai/{{ page.slug }}">
+{% endblock %}
 
 {% block content %}
 <section class="page-hero">
@@ -84,6 +90,10 @@
         {name: "Pecan", janka: 1820, slug: "pecan"},
         {name: "Butternut Hickory", janka: 1820, slug: "butternut-hickory"},
         {name: "Carolina Hickory", janka: 1820, slug: "carolina-hickory"},
+        {name: "Shagbark Hickory", janka: 1880, slug: "shagbark-hickory"},
+        {name: "Shellbark Hickory", janka: 1880, slug: "shellbark-hickory"},
+        {name: "Post Oak", janka: 1600, slug: "post-oak"},
+        {name: "Red Maple", janka: 950, slug: "red-maple--soft-maple-"},
         {name: "Flowering Dogwood", janka: 2150, slug: "flowering-dogwood"},
         {name: "Live Oak", janka: 2680, slug: "live-oak"}
     ];

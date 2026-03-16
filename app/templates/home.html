@@ -115,7 +115,7 @@
     <h2 class="fade-in">Latest Additions</h2>
     <div class="product-grid">
         {% for p in featured %}
-        <a href="/product/{{ p.slug }}" class="product-card fade-in">
+        <a href="/product/{{ p.slug }}" class="product-card{% if p.stock_status != 'instock' %} sold{% endif %} fade-in">
             <div class="product-card-image">
                 {% if p.image_path %}
                 <img src="/static/images/products/thumbs/{{ p.image_path }}" alt="{{ p.name }}" loading="lazy">
@@ -123,7 +123,11 @@
             </div>
             <div class="product-card-info">
                 <h3>{{ p.name }}</h3>
+                {% if p.stock_status == 'instock' %}
                 <p class="price">Call for Pricing</p>
+                {% else %}
+                <p class="price sold-text">Sold</p>
+                {% endif %}
             </div>
         </a>
         {% endfor %}
