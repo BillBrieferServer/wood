@@ -15,7 +15,7 @@
 <section class="page-hero">
     <div class="page-hero-overlay">
         <h1>Shop Our Slabs</h1>
-        <p>Every slab is one-of-a-kind. What you see is what you get.</p>
+        <p>In stock at our Pocatello warehouse. Ready to ship or pick up.</p>
     </div>
 </section>
 
@@ -26,6 +26,10 @@
         {% for cat in categories %}
         <a href="/shop?category={{ cat.category }}" class="filter-btn {% if current_category == cat.category %}active{% endif %}">{{ cat.category }}</a>
         {% endfor %}
+    </div>
+
+    <div class="shop-info-banner">
+        <strong>Don't see what you need?</strong> We can source any of our 30+ species, custom milled to your dimensions. <a href="/quote">Get a Quote &rarr;</a>
     </div>
 
     {% if products %}

@@ -1948,3 +1948,27 @@ a.btn-wood:hover, button.btn-wood:hover, .btn-wood:hover {
     text-decoration: none;
     color: white !important;
 }
+
+/* Shop info banner */
+.shop-info-banner {
+    background: #f9f6f1;
+    border: 1px solid #e8e0d4;
+    border-left: 4px solid #8B4513;
+    border-radius: 0 6px 6px 0;
+    padding: 14px 20px;
+    margin-bottom: 28px;
+    font-size: 0.95em;
+    color: #555;
+    line-height: 1.5;
+}
+.shop-info-banner strong {
+    color: #6d350e;
+}
+.shop-info-banner a {
+    color: #8B4513;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.shop-info-banner a:hover {
+    text-decoration: underline;
+}
