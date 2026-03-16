@@ -76,11 +76,11 @@
             <a href="/" class="nav-logo">Hardwood Haven <span>of Idaho</span></a>
             <button class="nav-toggle" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">&#9776;</button>
             <div class="nav-links">
-                <a href="/shop">Shop Slabs</a>
-                <a href="/quote">Get a Quote</a>
-                <a href="/our-story">Our Story</a>
-                <a href="/resources">Hardness Scale</a>
-                <a href="/species-guide">Species Guide</a>
+                <a href="/shop" id="nav-shop">Shop Slabs</a>
+                <a href="/quote" id="nav-quote">Get a Quote</a>
+                <a href="/our-story" id="nav-story">Our Story</a>
+                <a href="/resources" id="nav-resources">Hardness Scale</a>
+                <a href="/species-guide" id="nav-species">Species Guide</a>
             </div>
         </div>
     </nav>
@@ -145,6 +145,19 @@
 
         document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right, .species-tags').forEach(function(el) {
             observer.observe(el);
+        });
+    })();
+    </script>
+
+    <script>
+    // Active nav link
+    (function() {
+        var path = window.location.pathname;
+        var links = document.querySelectorAll('.nav-links a');
+        links.forEach(function(a) {
+            if (path === a.getAttribute('href') || (path.startsWith(a.getAttribute('href')) && a.getAttribute('href') !== '/')) {
+                a.classList.add('active');
+            }
         });
     })();
     </script>
