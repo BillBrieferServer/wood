@@ -739,6 +739,7 @@ img { max-width: 100%; height: auto; }
 .page-header { background: #f9f6f1; padding: 50px 20px; text-align: center; }
 .page-header h1 { color: #333; font-size: 2em; }
 .page-header p { color: #666; margin-top: 10px; font-size: 1.1em; }
+/* === Page Hero (mini hero banner for subpages) === */.page-hero {    background-image: url("/static/images/site/hero.webp");    background-size: cover;    background-position: center;    background-attachment: fixed;    display: flex;    align-items: center;    justify-content: center;    text-align: center;    min-height: 200px;    position: relative;}@media (max-width: 768px) {    .page-hero { background-attachment: scroll; min-height: 160px; }}.page-hero-overlay {    flex: 1;    background: rgba(0,0,0,0.45);    display: flex;    flex-direction: column;    align-items: center;    justify-content: center;    padding: 40px 20px;    min-height: 200px;}@media (max-width: 768px) {    .page-hero-overlay { padding: 30px 15px; min-height: 160px; }}.page-hero h1 {    color: white;    font-size: 2.2em;    text-shadow: 1px 1px 4px rgba(0,0,0,0.5);    margin: 0;}.page-hero p {    color: #ddd;    font-size: 1.1em;    margin-top: 8px;    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);}@media (max-width: 480px) {    .page-hero h1 { font-size: 1.6em; }    .page-hero p { font-size: 0.95em; }}
 .page-content { max-width: 900px; }
 .content-body { color: #444; line-height: 1.7; }
 .content-body h2 { color: #333; margin: 25px 0 10px; }
