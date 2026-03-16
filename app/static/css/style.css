@@ -460,7 +460,7 @@ img { max-width: 100%; height: auto; }
     transition: all 0.3s ease;
 }
 .filter-btn:hover { background: #f9f6f1; text-decoration: none; color: #333; transform: translateY(-2px); }
-.filter-btn.active { background: #8B4513; color: white; border-color: #8B4513; }
+.filter-btn.active { background-image: url("/static/images/site/wood-grain.webp"); background-size: cover; background-position: center; box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.35); color: white; border-color: transparent; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); }
 
 /* === Badges === */
 .badge-sold {
