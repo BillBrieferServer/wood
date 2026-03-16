@@ -1841,6 +1841,7 @@ img { max-width: 100%; height: auto; }
     margin-bottom: 5px;
 }
 .content-our-story .species-intro {
+    padding: 0 20px;
     text-align: center;
     color: #555;
     max-width: 700px;
