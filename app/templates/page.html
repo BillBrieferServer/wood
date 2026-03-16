@@ -284,7 +284,8 @@
             var tagsDiv = document.createElement('div');
             tagsDiv.className = 'story-species-tags';
             names.forEach(function(name) {
-                tagsDiv.innerHTML += '<span class="tag ' + tagClass + '">' + name + '</span>';
+                var slug = 'species-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-$/, '');
+                tagsDiv.innerHTML += '<a href="/species-guide#' + slug + '" class="tag ' + tagClass + '" style="text-decoration:none;">' + name + '</a>';
             });
             group.appendChild(tagsDiv);
 
