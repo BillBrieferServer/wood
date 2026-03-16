@@ -1902,7 +1902,7 @@ img { max-width: 100%; height: auto; }
 }
 
 /* Wood grain CTA buttons */
-.btn-wood {
+a.btn-wood, a.btn-wood:visited, .btn-wood {
     display: inline-block;
     padding: 14px 35px;
     font-size: 1.05em;
@@ -1914,12 +1914,12 @@ img { max-width: 100%; height: auto; }
     background-size: cover;
     background-position: center;
     box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.35);
-    color: white;
+    color: white !important;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
     text-decoration: none;
     transition: all 0.3s ease;
 }
-.btn-wood:hover {
+a.btn-wood:hover, .btn-wood:hover {
     box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.5);
     transform: translateY(-2px);
     text-decoration: none;
@@ -1927,7 +1927,7 @@ img { max-width: 100%; height: auto; }
 }
 
 /* Fallback for .button class in CMS content */
-.content-our-story .button {
+.content-our-story a.button {
     display: inline-block;
     padding: 14px 35px;
     font-size: 1.05em;
@@ -1942,7 +1942,7 @@ img { max-width: 100%; height: auto; }
     text-decoration: none;
     transition: all 0.3s ease;
 }
-.content-our-story .button:hover {
+.content-our-story a.button:hover {
     box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.5);
     transform: translateY(-2px);
     text-decoration: none;
