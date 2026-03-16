@@ -304,17 +304,27 @@ img { max-width: 100%; height: auto; }
 .card h3 { color: #333; margin-bottom: 8px; }
 .card p { color: #666; line-height: 1.6; margin-bottom: 10px; }
 .card-link {
+    background-image: url('/static/images/site/wood-grain.webp');
+    background-size: cover;
+    background-position: center;
+    box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.35);
+    color: white !important;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+    padding: 8px 18px;
+    border-radius: 4px;
+    display: inline-block;
     color: #8B4513;
     font-weight: 600;
     transition: letter-spacing 0.3s ease;
 }
-.card-link:hover { letter-spacing: 1px; text-decoration: none; }
+.card-link:hover { letter-spacing: 1px; text-decoration: none; box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.5); }
 
 /* === Why Section === */
 .why-section { background: #f9f6f1; padding: 60px 20px; max-width: 100%; }
 .why-section h2 { text-align: center; color: #333; font-size: 1.8em; margin-bottom: 30px; }
 .why-cards { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; max-width: 1100px; margin: 0 auto; }
 .why-card {
+    overflow: hidden;
     flex: 1;
     min-width: 220px;
     max-width: 300px;
@@ -322,6 +332,15 @@ img { max-width: 100%; height: auto; }
     padding: 30px 20px;
     border-radius: 8px;
     transition: background 0.3s ease, transform 0.3s ease;
+}
+.why-card::before {
+    content: '';
+    display: block;
+    height: 5px;
+    background-image: url('/static/images/site/wood-grain.webp');
+    background-size: cover;
+    background-position: center;
+    margin: -20px -25px 18px;
 }
 .why-card:hover { background: rgba(139,69,19,0.05); transform: translateY(-3px); }
 .why-card h3 { color: #8B4513; font-size: 1.3em; margin-bottom: 8px; }
@@ -353,7 +372,7 @@ img { max-width: 100%; height: auto; }
 .contractor-cta p { color: #ccc; font-size: 1.1em; margin-bottom: 25px; max-width: 700px; margin-left: auto; margin-right: auto; }
 
 /* === Contact CTA === */
-.contact-cta { text-align: center; }
+.contact-cta { text-align: center; background: #f9f6f1; padding: 50px 20px; max-width: 100%; border-radius: 0; }
 .contact-cta h2 { color: #333; font-size: 1.8em; margin-bottom: 15px; }
 .contact-cta p { color: #555; font-size: 1.1em; line-height: 1.7; }
 .contact-phone { margin-top: 15px; }
@@ -1994,3 +2013,7 @@ a.btn-wood:hover, button.btn-wood:hover, .btn-wood:hover {
 .shop-info-banner a:hover {
     text-decoration: underline;
 }
+
+/* Linked species tags on homepage */
+a.tag { text-decoration: none; color: white; }
+a.tag:hover { text-decoration: none; color: white; }
