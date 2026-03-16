@@ -15,6 +15,13 @@
 <section class="page-hero">
     <div class="page-hero-overlay">
         <h1>{{ page.title }}</h1>
+        {% if page.slug == 'our-story' %}
+        <p>Meet Alan and the team behind Hardwood Haven</p>
+        {% elif page.slug == 'resources' %}
+        <p>Compare Janka ratings across every species we carry</p>
+        {% elif page.slug == 'species-guide' %}
+        <p>Hardness, character, best uses, and workability for every species</p>
+        {% endif %}
     </div>
 </section>
 
