@@ -1409,7 +1409,7 @@ img { max-width: 100%; height: auto; }
 
 /* Species cards — h4 is the header, following p is the body */
 .content-species-guide h4 {
-    background-image: url('/static/images/site/hero.webp');
+    background-image: url('/static/images/site/wood-grain.webp');
     background-size: cover;
     background-position: center;
     color: white;
