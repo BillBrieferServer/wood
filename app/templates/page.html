@@ -182,4 +182,164 @@
 })();
 </script>
 {% endif %}
+
+{% if page.slug == 'our-story' %}
+<script>
+(function() {
+    var body = document.querySelector('.content-our-story');
+    if (!body) return;
+
+    // --- Wrap opening paragraphs (between first h2 and first hr) in a panel ---
+    var firstH2 = body.querySelector('h2');
+    var firstHr = body.querySelector('hr');
+    if (firstH2 && firstHr) {
+        var wrap = document.createElement('div');
+        wrap.className = 'story-opening';
+        var node = firstH2.nextElementSibling;
+        var toMove = [];
+        while (node && node !== firstHr) {
+            toMove.push(node);
+            node = node.nextElementSibling;
+        }
+        toMove.forEach(function(n) { wrap.appendChild(n); });
+        firstH2.parentNode.insertBefore(wrap, firstHr);
+    }
+
+    // --- Convert "From Tree to Table" into a timeline ---
+    var h2s = body.querySelectorAll('h2');
+    var processH2 = null;
+    h2s.forEach(function(h) {
+        if (h.textContent.indexOf('From Tree to Table') !== -1) processH2 = h;
+    });
+    if (processH2) {
+        var processIntro = processH2.nextElementSibling; // the intro p
+        var steps = [];
+        var h3s = body.querySelectorAll('h3');
+        var stepNames = ['Sourcing', 'Milling', 'Drying', 'Delivery'];
+        h3s.forEach(function(h3) {
+            for (var i = 0; i < stepNames.length; i++) {
+                if (h3.textContent.indexOf(stepNames[i]) !== -1) {
+                    var desc = h3.nextElementSibling;
+                    steps.push({title: stepNames[i], text: desc ? desc.textContent : '', h3: h3, p: desc});
+                    break;
+                }
+            }
+        });
+
+        if (steps.length === 4) {
+            // Replace h2 with styled heading
+            processH2.className = 'process-heading';
+            processH2.textContent = 'From Tree to Table';
+
+            // Style intro
+            if (processIntro && processIntro.tagName === 'P') {
+                processIntro.className = 'process-subtitle';
+            }
+
+            // Build timeline
+            var timeline = document.createElement('div');
+            timeline.className = 'process-timeline';
+            steps.forEach(function(s, i) {
+                timeline.innerHTML += '<div class="process-step">' +
+                    '<div class="process-step-number">' + (i+1) + '</div>' +
+                    '<h3>' + s.title + '</h3>' +
+                    '<p>' + s.text + '</p>' +
+                '</div>';
+            });
+
+            // Insert timeline after intro, remove old h3/p pairs
+            processIntro.parentNode.insertBefore(timeline, processIntro.nextSibling);
+            steps.forEach(function(s) {
+                if (s.p) s.p.remove();
+                s.h3.remove();
+            });
+        }
+    }
+
+    // --- Convert species list paragraphs into tags ---
+    var speciesH2 = null;
+    h2s.forEach(function(h) {
+        if (h.textContent.indexOf('30+ Species') !== -1) speciesH2 = h;
+    });
+    if (speciesH2) {
+        speciesH2.className = 'species-heading';
+
+        // Find the two intro paragraphs, then h3 Domestic / h3 Softwoods with their p lists
+        var allH3 = body.querySelectorAll('h3');
+        var domesticH3 = null, softwoodH3 = null;
+        allH3.forEach(function(h) {
+            if (h.textContent.indexOf('Domestic') !== -1) domesticH3 = h;
+            if (h.textContent.indexOf('Softwood') !== -1) softwoodH3 = h;
+        });
+
+        function makeTagGroup(h3el, tagClass) {
+            if (!h3el) return;
+            var p = h3el.nextElementSibling;
+            if (!p || p.tagName !== 'P') return;
+            var names = p.textContent.split(',').map(function(s) { return s.trim(); }).filter(function(s) { return s; });
+
+            var group = document.createElement('div');
+            group.className = 'story-species-group';
+            group.innerHTML = '<h3>' + h3el.textContent + '</h3>';
+            var tagsDiv = document.createElement('div');
+            tagsDiv.className = 'story-species-tags';
+            names.forEach(function(name) {
+                tagsDiv.innerHTML += '<span class="tag ' + tagClass + '">' + name + '</span>';
+            });
+            group.appendChild(tagsDiv);
+
+            h3el.parentNode.insertBefore(group, h3el);
+            p.remove();
+            h3el.remove();
+        }
+
+        makeTagGroup(domesticH3, 'tag-hw');
+        makeTagGroup(softwoodH3, 'tag-sw');
+
+        // Style the "Don't see what you need" paragraph
+        var paras = body.querySelectorAll('p');
+        paras.forEach(function(p) {
+            if (p.textContent.indexOf("Don't see what you need") !== -1) {
+                p.className = 'story-species-note';
+            }
+        });
+    }
+
+    // --- Wrap service area section in a card ---
+    var serviceH2 = null;
+    h2s.forEach(function(h) {
+        if (h.textContent.indexOf('Serving the') !== -1) serviceH2 = h;
+    });
+    if (serviceH2) {
+        var card = document.createElement('div');
+        card.className = 'service-area-card';
+        // Collect everything from serviceH2 to the next hr or CTA div
+        var node = serviceH2;
+        var toWrap = [];
+        while (node) {
+            var next = node.nextElementSibling;
+            if (node.tagName === 'HR' || (node.tagName === 'DIV' && node.style.textAlign === 'center')) break;
+            toWrap.push(node);
+            node = next;
+        }
+        var insertBefore = toWrap[toWrap.length - 1].nextElementSibling;
+        toWrap.forEach(function(n) { card.appendChild(n); });
+        body.insertBefore(card, insertBefore);
+    }
+
+    // --- Fix CTA buttons ---
+    var ctaDiv = body.querySelector('div[style*="text-align:center"]') || body.querySelector('div[style*="text-align: center"]');
+    if (ctaDiv) {
+        ctaDiv.className = 'story-cta';
+        ctaDiv.removeAttribute('style');
+        var links = ctaDiv.querySelectorAll('a');
+        links.forEach(function(a) {
+            a.className = 'btn btn-primary';
+            a.removeAttribute('style');
+        });
+    }
+})();
+</script>
+{% endif %}
+
 {% endblock %}

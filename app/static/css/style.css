@@ -1686,3 +1686,217 @@ img { max-width: 100%; height: auto; }
 .hardness-bar-row.reference-only .hardness-bar-value {
     color: #bbb;
 }
+
+
+/* === Our Story Page === */
+
+/* Pull quote / opening story section */
+.content-our-story > h2:first-child {
+    color: #8B4513;
+    font-size: 1.6em;
+    text-align: center;
+    margin-bottom: 5px;
+}
+.story-opening {
+    background: #f9f6f1;
+    border-left: 4px solid #8B4513;
+    border-radius: 0 8px 8px 0;
+    padding: 28px 30px;
+    margin: 20px 0 35px;
+    color: #444;
+    line-height: 1.8;
+}
+.story-opening p {
+    margin-bottom: 12px;
+}
+.story-opening p:last-child {
+    margin-bottom: 0;
+}
+.story-opening strong {
+    color: #6d350e;
+    font-size: 1.05em;
+}
+
+/* Section dividers */
+.content-our-story hr {
+    border: none;
+    height: 4px;
+    background-image: url('/static/images/site/wood-grain.webp');
+    background-size: cover;
+    background-position: center;
+    border-radius: 2px;
+    margin: 40px 0;
+    opacity: 0.5;
+}
+
+/* Process section heading */
+.content-our-story .process-heading {
+    color: #8B4513;
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 5px;
+}
+.content-our-story .process-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Process timeline */
+.process-timeline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin: 0 0 10px;
+}
+@media (max-width: 768px) {
+    .process-timeline { grid-template-columns: 1fr 1fr; gap: 16px; }
+}
+@media (max-width: 480px) {
+    .process-timeline { grid-template-columns: 1fr; }
+}
+.process-step {
+    text-align: center;
+    padding: 25px 18px;
+    background: #faf7f2;
+    border-radius: 8px;
+    border: 1px solid #e8e0d4;
+    position: relative;
+}
+.process-step-number {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-image: url('/static/images/site/wood-grain.webp');
+    background-size: cover;
+    background-position: center;
+    box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.35);
+    color: white;
+    font-size: 1.3em;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+}
+.process-step h3 {
+    color: #8B4513;
+    font-size: 1.1em;
+    margin: 0 0 8px;
+}
+.process-step p {
+    color: #555;
+    font-size: 0.9em;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Species section */
+.content-our-story .species-heading {
+    color: #8B4513;
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 5px;
+}
+.content-our-story .species-intro {
+    text-align: center;
+    color: #555;
+    max-width: 700px;
+    margin: 0 auto 25px;
+    line-height: 1.7;
+}
+.story-species-group {
+    margin-bottom: 20px;
+}
+.story-species-group h3 {
+    color: #6d350e;
+    font-size: 1em;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.story-species-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+.story-species-tags .tag {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+.story-species-tags .tag-hw {
+    background: #f5ebe0;
+    color: #6d4c2a;
+    border: 1px solid #e0d0ba;
+}
+.story-species-tags .tag-sw {
+    background: #e8f0e4;
+    color: #3a5c2e;
+    border: 1px solid #c8d8c0;
+}
+.story-species-note {
+    color: #888;
+    font-size: 0.9em;
+    font-style: italic;
+    margin-top: 12px;
+}
+
+/* Service area card */
+.service-area-card {
+    background: #f9f6f1;
+    border-radius: 8px;
+    border: 1px solid #e8e0d4;
+    padding: 28px 30px;
+    margin: 20px 0;
+}
+.service-area-card h2 {
+    color: #8B4513;
+    font-size: 1.3em;
+    margin: 0 0 10px;
+}
+.service-area-card p {
+    color: #555;
+    line-height: 1.7;
+}
+.service-area-card ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 20px;
+    margin: 15px 0;
+}
+@media (max-width: 480px) {
+    .service-area-card ul { grid-template-columns: 1fr; }
+}
+.service-area-card li {
+    padding: 8px 14px;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #e8e0d4;
+    font-size: 0.95em;
+    color: #444;
+}
+.service-area-card li strong {
+    color: #8B4513;
+}
+
+/* CTA section */
+.story-cta {
+    text-align: center;
+    padding: 30px 20px;
+    margin-top: 25px;
+}
+.story-cta .btn {
+    margin: 0 8px 10px;
+}
+
+@media (max-width: 480px) {
+    .story-opening { padding: 20px 18px; }
+    .service-area-card { padding: 20px 18px; }
+}
