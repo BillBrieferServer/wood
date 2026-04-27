@@ -3,12 +3,12 @@
 {% block title %}{{ product.name }} — Hardwood Haven of Idaho{% endblock %}
 
 {% block meta_description %}<meta name="description" content="{{ product.name }} — {{ product.category }} live edge slab from Hardwood Haven of Idaho. {{ product.short_description or 'One-of-a-kind premium hardwood slab. Call for pricing.' }}">{% endblock %}
-{% block canonical %}https://wood.quietimpact.ai/product/{{ product.slug }}{% endblock %}
+{% block canonical %}https://hardwoodhavenofidaho.com/product/{{ product.slug }}{% endblock %}
 {% block og_tags %}
 <meta property="og:title" content="{{ product.name }} — Hardwood Haven of Idaho">
 <meta property="og:description" content="{{ product.short_description or product.category ~ ' live edge slab from Hardwood Haven of Idaho' }}">
-{% if images %}<meta property="og:image" content="https://wood.quietimpact.ai/static/images/products/{{ images[0].image_path }}">{% endif %}
-<meta property="og:url" content="https://wood.quietimpact.ai/product/{{ product.slug }}">
+{% if images %}<meta property="og:image" content="https://hardwoodhavenofidaho.com/static/images/products/{{ images[0].image_path }}">{% endif %}
+<meta property="og:url" content="https://hardwoodhavenofidaho.com/product/{{ product.slug }}">
 {% endblock %}
 
 {% block structured_data %}
@@ -18,13 +18,13 @@
     "@type": "Product",
     "name": "{{ product.name }}",
     "description": "{{ product.short_description or '' }}",
-    {% if images %}"image": "https://wood.quietimpact.ai/static/images/products/{{ images[0].image_path }}",{% endif %}
+    {% if images %}"image": "https://hardwoodhavenofidaho.com/static/images/products/{{ images[0].image_path }}",{% endif %}
     "brand": {"@type": "Brand", "name": "Hardwood Haven of Idaho"},
     "category": "Live Edge Wood Slabs",
     "offers": {
         "@type": "Offer",
         "availability": "{% if product.stock_status == 'instock' %}https://schema.org/InStock{% else %}https://schema.org/SoldOut{% endif %}",
-        "url": "https://wood.quietimpact.ai/product/{{ product.slug }}",
+        "url": "https://hardwoodhavenofidaho.com/product/{{ product.slug }}",
         "seller": {"@type": "Organization", "name": "Hardwood Haven of Idaho"}
     }
 }

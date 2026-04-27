@@ -35,7 +35,7 @@ SMTP_USER = os.environ.get("SMTP_USER", "")
 SMTP_PASS = os.environ.get("SMTP_PASS", "")
 QUOTE_EMAIL = os.environ.get("QUOTE_EMAIL", "alanhardwoodhaven@gmail.com")
 NTFY_TOPIC = os.environ.get("NTFY_TOPIC", "")
-DOMAIN = os.environ.get("DOMAIN", "https://wood.quietimpact.ai")
+DOMAIN = os.environ.get("DOMAIN", "https://hardwoodhavenofidaho.com")
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -320,7 +320,7 @@ def _render_page(request: Request, slug: str):
 @app.get("/robots.txt", response_class=HTMLResponse)
 def robots_txt():
     return HTMLResponse(
-        content="User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: https://wood.quietimpact.ai/sitemap.xml\n",
+        content="User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: https://hardwoodhavenofidaho.com/sitemap.xml\n",
         media_type="text/plain",
     )
 
@@ -333,20 +333,20 @@ def sitemap_xml():
 
     urls = []
     # Homepage
-    urls.append('<url><loc>https://wood.quietimpact.ai</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>')
+    urls.append('<url><loc>https://hardwoodhavenofidaho.com</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>')
     # Shop
-    urls.append('<url><loc>https://wood.quietimpact.ai/shop</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>')
+    urls.append('<url><loc>https://hardwoodhavenofidaho.com/shop</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>')
     # Quote
-    urls.append('<url><loc>https://wood.quietimpact.ai/quote</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>')
+    urls.append('<url><loc>https://hardwoodhavenofidaho.com/quote</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>')
     # Species Guide
-    urls.append('<url><loc>https://wood.quietimpact.ai/species-guide</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>')
+    urls.append('<url><loc>https://hardwoodhavenofidaho.com/species-guide</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>')
     # Static pages
     for page in pages:
-        urls.append(f'<url><loc>https://wood.quietimpact.ai/{page["slug"]}</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>')
+        urls.append(f'<url><loc>https://hardwoodhavenofidaho.com/{page["slug"]}</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>')
     # Products
     for p in products:
         priority = "0.8" if p["stock_status"] == "instock" else "0.4"
-        urls.append(f'<url><loc>https://wood.quietimpact.ai/product/{p["slug"]}</loc><changefreq>weekly</changefreq><priority>{priority}</priority></url>')
+        urls.append(f'<url><loc>https://hardwoodhavenofidaho.com/product/{p["slug"]}</loc><changefreq>weekly</changefreq><priority>{priority}</priority></url>')
 
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
