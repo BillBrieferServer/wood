@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Resources — Hardwood Haven of Idaho{% endblock %}
+{% block meta_description %}<meta name="description" content="{{ meta_description }}">{% endblock %}
+{% block canonical %}https://hardwoodhavenofidaho.com/resources{% endblock %}
+{% block og_tags %}
+<meta property="og:title" content="Resources — Hardwood Haven of Idaho">
+<meta property="og:description" content="{{ meta_description }}">
+<meta property="og:url" content="https://hardwoodhavenofidaho.com/resources">
+{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+    <div class="page-hero-overlay">
+        <h1>Resources</h1>
+        <p>Everything you need to choose the right slab — hardness, species, and how-to guides</p>
+    </div>
+</section>
+
+<section class="section page-content">
+    <div class="resource-grid">
+        <a class="resource-card" href="/hardness-scale">
+            <h3>Hardness Scale</h3>
+            <p>Janka hardness ratings for every species we carry — compare durability at a glance.</p>
+        </a>
+        <a class="resource-card" href="/species-guide">
+            <h3>Species Guide</h3>
+            <p>Character, best uses, and workability for 30+ live edge wood species.</p>
+        </a>
+        {% for g in guides %}
+        <a class="resource-card" href="/guides/{{ g['slug'] }}">
+            <h3>{{ g['title'] }}</h3>
+            <p>{% if g['meta_description'] %}{{ g['meta_description'] }}{% else %}Read the guide &rsaquo;{% endif %}</p>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} — Hardwood Haven of Idaho{% endblock %}
+{% block meta_description %}<meta name="description" content="{{ meta_description }}">{% endblock %}
+{% block canonical %}https://hardwoodhavenofidaho.com/guides/{{ page.slug }}{% endblock %}
+{% block og_tags %}
+<meta property="og:title" content="{{ page.title }} — Hardwood Haven of Idaho">
+<meta property="og:description" content="{{ meta_description }}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://hardwoodhavenofidaho.com/guides/{{ page.slug }}">
+{% endblock %}
+
+{% block content %}
+<section class="section guide-article">
+    <nav class="breadcrumb"><a href="/resources">Resources</a> &rsaquo; <span>{{ page.title }}</span></nav>
+    <article class="content-body guide-body">
+        <h1>{{ page.title }}</h1>
+        {{ page.content | safe }}
+    </article>
+    {% if faq %}
+    <section class="guide-faq">
+        <h2>Frequently Asked Questions</h2>
+        {% for item in faq %}
+        <div class="faq-item">
+            <h3>{{ item['q'] }}</h3>
+            <p>{{ item['a'] }}</p>
+        </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+    <div class="guide-cta">
+        <p>Looking for a slab? <a href="/shop">Browse our live edge inventory</a> or <a href="/quote">request a quote</a>.</p>
+    </div>
+</section>
+
+{% if faq %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {% for item in faq %}{
+      "@type": "Question",
+      "name": {{ item['q'] | tojson }},
+      "acceptedAnswer": {"@type": "Answer", "text": {{ item['a'] | tojson }}}
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endif %}
+{% endblock %}

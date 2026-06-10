@@ -2018,3 +2018,50 @@ a.btn-wood:hover, button.btn-wood:hover, .btn-wood:hover {
 /* Linked species tags on homepage */
 a.tag { text-decoration: none; color: white; }
 a.tag:hover { text-decoration: none; color: white; }
+
+
+/* ===== Resources dropdown + hub + guides ===== */
+.nav-dropdown { position: relative; display: inline-block; }
+.nav-dropdown-toggle .caret { font-size: 0.65em; vertical-align: middle; }
+.nav-dropdown-menu {
+    position: absolute; top: 100%; left: 0; min-width: 210px;
+    background: #fff; border: 1px solid #e5ded3; border-radius: 8px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.12); padding: 8px 0;
+    display: none; z-index: 300;
+}
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown:focus-within .nav-dropdown-menu { display: block; }
+.nav-dropdown-menu a { display: block; padding: 10px 18px; color: #333; white-space: nowrap; }
+.nav-dropdown-menu a:hover { background: #f7f3ec; color: #8B4513; text-decoration: none; }
+.nav-dropdown-menu a::after { display: none; }
+
+.resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px; max-width: 1000px; margin: 0 auto;
+}
+.resource-card {
+    display: block; padding: 28px; border: 1px solid #e5ded3; border-radius: 10px;
+    background: #fff; transition: box-shadow .2s ease, transform .2s ease;
+}
+.resource-card:hover { box-shadow: 0 12px 30px rgba(0,0,0,0.10); transform: translateY(-3px); text-decoration: none; }
+.resource-card h3 { color: #8B4513; margin: 0 0 8px; }
+.resource-card p { color: #555; margin: 0; font-size: 0.95em; line-height: 1.5; }
+
+.guide-article { max-width: 800px; margin: 0 auto; }
+.breadcrumb { font-size: 0.9em; margin-bottom: 18px; color: #8a8170; }
+.breadcrumb a { color: #8B4513; }
+.guide-body h1 { margin-bottom: 0.5em; }
+.guide-body h2 { margin-top: 1.6em; color: #5a3a1a; }
+.guide-body h3 { margin-top: 1.2em; color: #5a3a1a; }
+.guide-body p, .guide-body li { line-height: 1.75; color: #333; }
+.guide-body ul, .guide-body ol { padding-left: 1.4em; }
+.guide-faq { margin-top: 40px; border-top: 1px solid #e5ded3; padding-top: 26px; }
+.guide-faq .faq-item { margin-bottom: 20px; }
+.guide-faq h3 { margin: 0 0 6px; font-size: 1.05em; color: #5a3a1a; }
+.guide-cta { margin-top: 36px; padding: 22px; background: #f7f3ec; border-radius: 8px; text-align: center; }
+
+@media (max-width: 768px) {
+    .nav-dropdown { width: 100%; }
+    .nav-dropdown-menu { position: static; display: block; box-shadow: none; border: none; padding: 6px 0 6px 16px; min-width: 0; }
+    .nav-dropdown-toggle .caret { display: none; }
+}

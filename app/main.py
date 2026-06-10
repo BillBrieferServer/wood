@@ -6,6 +6,7 @@ import secrets
 import shutil
 import smtplib
 import logging
+import json
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from contextlib import contextmanager
@@ -35,6 +36,7 @@ SMTP_USER = os.environ.get("SMTP_USER", "")
 SMTP_PASS = os.environ.get("SMTP_PASS", "")
 QUOTE_EMAIL = os.environ.get("QUOTE_EMAIL", "alanhardwoodhaven@gmail.com")
 NTFY_TOPIC = os.environ.get("NTFY_TOPIC", "")
+GUIDE_PUBLISH_KEY = os.environ.get("GUIDE_PUBLISH_KEY", "")
 DOMAIN = os.environ.get("DOMAIN", "https://hardwoodhavenofidaho.com")
 
 logger = logging.getLogger("uvicorn.error")
@@ -104,7 +106,7 @@ def slugify(text):
 # SEO meta descriptions for static pages
 PAGE_DESCRIPTIONS = {
     "our-story": "Meet Alan and the Hardwood Haven of Idaho team. Learn how we source premium live edge slabs directly from America\u2019s hardwood country to Pocatello, Idaho.",
-    "resources": "Janka hardness scale for live edge wood species. Compare hardness ratings for Walnut, Cherry, Maple, Oak, Hickory and more at Hardwood Haven of Idaho.",
+    "hardness-scale": "Janka hardness scale for live edge wood species. Compare hardness ratings for Walnut, Cherry, Maple, Oak, Hickory and more at Hardwood Haven of Idaho.",
     "privacy": "Privacy policy for the Hardwood Haven of Idaho website and online services.",
     "species-guide": "Complete guide to live edge wood species — hardness ratings, character, best uses, and workability. Walnut, Cherry, Maple, Oak, Hickory, Box Elder and 25+ more.",
 }
@@ -297,12 +299,68 @@ def our_story(request: Request):
     return _render_page(request, "our-story")
 
 @app.get("/resources", response_class=HTMLResponse)
-def resources(request: Request):
-    return _render_page(request, "resources")
+def resources_hub(request: Request):
+    with db() as conn:
+        guides = conn.execute(
+            "SELECT slug, title, meta_description FROM pages WHERE kind = 'guide' ORDER BY title"
+        ).fetchall()
+    meta_desc = ("Wood resources from Hardwood Haven of Idaho: the Janka hardness scale, "
+                 "live edge species guide, and in-depth guides on kiln drying, slab selection "
+                 "and working with hardwood.")
+    return templates.TemplateResponse("resources.html",
+        {"request": request, "guides": guides, "meta_description": meta_desc})
+
+
+@app.get("/hardness-scale", response_class=HTMLResponse)
+def hardness_scale(request: Request):
+    return _render_page(request, "hardness-scale")
+
 
 @app.get("/species-guide", response_class=HTMLResponse)
 def species_guide(request: Request):
     return _render_page(request, "species-guide")
+
+
+@app.get("/guides/{slug}", response_class=HTMLResponse)
+def guide_page(request: Request, slug: str):
+    with db() as conn:
+        page = conn.execute(
+            "SELECT * FROM pages WHERE slug = ? AND kind = 'guide'", (slug,)).fetchone()
+    if not page:
+        raise HTTPException(status_code=404, detail="Guide not found")
+    meta_desc = page["meta_description"] or (page["title"] + " - Hardwood Haven of Idaho")
+    try:
+        faq = json.loads(page["faq"] or "[]")
+    except Exception:
+        faq = []
+    return templates.TemplateResponse("guide.html",
+        {"request": request, "page": page, "meta_description": meta_desc, "faq": faq})
+
+
+@app.post("/api/guides/publish")
+async def publish_guide(request: Request):
+    if not GUIDE_PUBLISH_KEY:
+        raise HTTPException(status_code=503, detail="publishing not configured")
+    data = await request.json()
+    if data.get("key") != GUIDE_PUBLISH_KEY:
+        raise HTTPException(status_code=401, detail="bad key")
+    slug = (data.get("slug") or "").strip().strip("/")
+    title = (data.get("title") or "").strip()
+    content_html = data.get("content_html") or ""
+    meta = (data.get("meta_description") or "").strip()
+    faq = data.get("faq") or []
+    if not slug or not title or not content_html:
+        raise HTTPException(status_code=400, detail="slug, title, content_html required")
+    with db() as conn:
+        conn.execute(
+            """INSERT INTO pages (slug, title, content, kind, faq, meta_description)
+               VALUES (?, ?, ?, 'guide', ?, ?)
+               ON CONFLICT(slug) DO UPDATE SET
+                 title=excluded.title, content=excluded.content, kind='guide',
+                 faq=excluded.faq, meta_description=excluded.meta_description""",
+            (slug, title, content_html, json.dumps(faq), meta))
+        conn.commit()
+    return {"ok": True, "url": "https://hardwoodhavenofidaho.com/guides/" + slug}
 
 
 @app.get("/privacy", response_class=HTMLResponse)
@@ -335,7 +393,8 @@ def robots_txt():
 def sitemap_xml():
     with db() as conn:
         products = conn.execute("SELECT slug, stock_status FROM products ORDER BY id").fetchall()
-        pages = conn.execute("SELECT slug FROM pages WHERE slug NOT IN ('home', 'contractors', 'quote', 'returns') ORDER BY slug").fetchall()
+        pages = conn.execute("SELECT slug FROM pages WHERE kind = 'page' AND slug NOT IN ('home', 'contractors', 'quote', 'returns', 'species-guide') ORDER BY slug").fetchall()
+        guides = conn.execute("SELECT slug FROM pages WHERE kind = 'guide' ORDER BY slug").fetchall()
 
     urls = []
     # Homepage
@@ -346,9 +405,14 @@ def sitemap_xml():
     urls.append('<url><loc>https://hardwoodhavenofidaho.com/quote</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>')
     # Species Guide
     urls.append('<url><loc>https://hardwoodhavenofidaho.com/species-guide</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>')
+    # Resources hub
+    urls.append('<url><loc>https://hardwoodhavenofidaho.com/resources</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>')
     # Static pages
     for page in pages:
         urls.append(f'<url><loc>https://hardwoodhavenofidaho.com/{page["slug"]}</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>')
+    # Guides
+    for g in guides:
+        urls.append(f'<url><loc>https://hardwoodhavenofidaho.com/guides/{g["slug"]}</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>')
     # Products
     for p in products:
         priority = "0.8" if p["stock_status"] == "instock" else "0.4"
