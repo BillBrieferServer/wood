@@ -363,6 +363,22 @@ async def publish_guide(request: Request):
     return {"ok": True, "url": "https://hardwoodhavenofidaho.com/guides/" + slug}
 
 
+@app.post("/api/guides/unpublish")
+async def unpublish_guide(request: Request):
+    if not GUIDE_PUBLISH_KEY:
+        raise HTTPException(status_code=503, detail="publishing not configured")
+    data = await request.json()
+    if data.get("key") != GUIDE_PUBLISH_KEY:
+        raise HTTPException(status_code=401, detail="bad key")
+    slug = (data.get("slug") or "").strip().strip("/")
+    if not slug:
+        raise HTTPException(status_code=400, detail="slug required")
+    with db() as conn:
+        conn.execute("DELETE FROM pages WHERE slug = ? AND kind = 'guide'", (slug,))
+        conn.commit()
+    return {"ok": True}
+
+
 @app.get("/privacy", response_class=HTMLResponse)
 def privacy(request: Request):
     return _render_page(request, "privacy")
