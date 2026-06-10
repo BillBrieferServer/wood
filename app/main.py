@@ -11,7 +11,7 @@ from email.mime.multipart import MIMEMultipart
 from contextlib import contextmanager
 
 from fastapi import FastAPI, Request, Form, UploadFile, File, HTTPException
-from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
@@ -50,6 +50,12 @@ app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "static")), name="static")
 
 templates = Jinja2Templates(directory=os.path.join(os.path.dirname(__file__), "templates"))
+
+
+@app.get("/google21003b2a2752cfe3.html", response_class=PlainTextResponse)
+def google_site_verification():
+    return "google-site-verification: google21003b2a2752cfe3.html"
+
 
 
 
